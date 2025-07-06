@@ -1,3 +1,133 @@
 <resources>
     <string name="app_name">QCMB_Mobile</string>
+
+    <!-- Common -->
+    <string name="ok">OK</string>
+    <string name="cancel">Hủy</string>
+    <string name="yes">Có</string>
+    <string name="no">Không</string>
+    <string name="confirm">Xác nhận</string>
+    <string name="save">Lưu</string>
+    <string name="delete">Xóa</string>
+    <string name="edit">Chỉnh sửa</string>
+    <string name="loading">Đang tải...</string>
+    <string name="error">Lỗi</string>
+    <string name="success">Thành công</string>
+    <string name="retry">Thử lại</string>
+    <string name="back">Quay lại</string>
+    <string name="next">Tiếp theo</string>
+    <string name="done">Hoàn thành</string>
+
+    <!-- Auth -->
+    <string name="login">Đăng nhập</string>
+    <string name="register">Đăng ký</string>
+    <string name="logout">Đăng xuất</string>
+    <string name="email">Email</string>
+    <string name="password">Mật khẩu</string>
+    <string name="confirm_password">Xác nhận mật khẩu</string>
+    <string name="full_name">Họ và tên</string>
+    <string name="username">Tên người dùng</string>
+    <string name="forgot_password">Quên mật khẩu?</string>
+    <string name="reset_password">Đặt lại mật khẩu</string>
+    <string name="change_password">Đổi mật khẩu</string>
+    <string name="current_password">Mật khẩu hiện tại</string>
+    <string name="new_password">Mật khẩu mới</string>
+
+    <!-- Dashboard -->
+    <string name="dashboard">Trang chủ</string>
+    <string name="profile">Hồ sơ</string>
+    <string name="settings">Cài đặt</string>
+    <string name="leaderboard">Bảng xếp hạng</string>
+    <string name="store">Cửa hàng</string>
+    <string name="inventory">Kho đồ</string>
+    <string name="token_balance">Số dư token</string>
+
+    <!-- Game -->
+    <string name="quick_match">Tìm trận nhanh</string>
+    <string name="create_room">Tạo phòng</string>
+    <string name="join_room">Tham gia phòng</string>
+    <string name="room_code">Mã phòng</string>
+    <string name="start_game">Bắt đầu trò chơi</string>
+    <string name="leave_room">Rời phòng</string>
+    <string name="waiting_for_players">Đang chờ người chơi...</string>
+    <string name="game_starting">Trò chơi sắp bắt đầu...</string>
+    <string name="your_turn">Lượt của bạn</string>
+    <string name="opponent_turn">Lượt của đối thủ</string>
+    <string name="time_remaining">Thời gian còn lại</string>
+    <string name="score">Điểm số</string>
+    <string name="correct_answer">Trả lời đúng!</string>
+    <string name="wrong_answer">Trả lời sai!</string>
+    <string name="game_over">Kết thúc trò chơi</string>
+    <string name="you_won">Bạn đã thắng!</string>
+    <string name="you_lost">Bạn đã thua!</string>
+    <string name="draw">Hòa!</string>
+    <string name="play_again">Chơi lại</string>
+
+    <!-- Topics -->
+    <string name="select_topic">Chọn chủ đề</string>
+    <string name="all_topics">Tất cả chủ đề</string>
+    <string name="programming">Lập trình</string>
+    <string name="science">Khoa học</string>
+    <string name="history">Lịch sử</string>
+    <string name="sports">Thể thao</string>
+    <string name="entertainment">Giải trí</string>
+    <string name="general_knowledge">Kiến thức tổng quát</string>
+
+    <!-- Cards and Items -->
+    <string name="hand">Bài trên tay</string>
+    <string name="play_card">Đánh bài</string>
+    <string name="draw_card">Rút bài</string>
+    <string name="item_effect">Hiệu ứng item</string>
+    <string name="skip_turn">Bỏ lượt</string>
+    <string name="reverse_turn">Đảo lượt</string>
+    <string name="double_score">Điểm x2</string>
+    <string name="extra_time">Thêm thời gian</string>
+    <string name="no_items">Không có item</string>
+    <string name="select_items">Chọn item</string>
+    <string name="purchase_item">Mua item</string>
+    <string name="random_item">Item ngẫu nhiên</string>
+
+    <!-- Store -->
+    <string name="not_enough_tokens">Không đủ token</string>
+    <string name="purchase_successful">Mua thành công</string>
+    <string name="purchase_failed">Mua thất bại</string>
+    <string name="item_price">Giá: %d token</string>
+    <string name="buy_now">Mua ngay</string>
+
+    <!-- Validation Messages -->
+    <string name="field_required">Trường này là bắt buộc</string>
+    <string name="invalid_email">Email không hợp lệ</string>
+    <string name="password_too_short">Mật khẩu phải có ít nhất 6 ký tự</string>
+    <string name="passwords_not_match">Mật khẩu không khớp</string>
+    <string name="username_too_short">Tên người dùng phải có ít nhất 3 ký tự</string>
+
+    <!-- Error Messages -->
+    <string name="network_error">Lỗi kết nối mạng</string>
+    <string name="server_error">Lỗi máy chủ</string>
+    <string name="login_failed">Đăng nhập thất bại</string>
+    <string name="register_failed">Đăng ký thất bại</string>
+    <string name="room_not_found">Không tìm thấy phòng</string>
+    <string name="room_full">Phòng đã đầy</string>
+    <string name="game_connection_lost">Mất kết nối trò chơi</string>
+    <string name="unexpected_error">Lỗi không xác định</string>
+
+    <!-- Success Messages -->
+    <string name="login_successful">Đăng nhập thành công</string>
+    <string name="register_successful">Đăng ký thành công</string>
+    <string name="profile_updated">Cập nhật hồ sơ thành công</string>
+    <string name="password_changed">Đổi mật khẩu thành công</string>
+    <string name="room_created">Tạo phòng thành công</string>
+    <string name="room_joined">Tham gia phòng thành công</string>
+
+    <!-- Confirmation Messages -->
+    <string name="confirm_logout">Bạn có chắc muốn đăng xuất?</string>
+    <string name="confirm_leave_room">Bạn có chắc muốn rời phòng?</string>
+    <string name="confirm_delete_account">Bạn có chắc muốn xóa tài khoản?</string>
+
+    <!-- Content Descriptions -->
+    <string name="logo_description">Logo ứng dụng</string>
+    <string name="profile_picture">Ảnh đại diện</string>
+    <string name="menu">Menu</string>
+    <string name="settings_icon">Biểu tượng cài đặt</string>
+    <string name="card_item_icon">Biểu tượng item trên bài</string>
 </resources>

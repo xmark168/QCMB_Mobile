@@ -1,5 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <!-- Primary Colors -->
+    <color name="primary_blue">#2196F3</color>
+    <color name="primary_blue_dark">#1976D2</color>
+    <color name="primary_blue_light">#64B5F6</color>
+
+    <!-- Secondary Colors -->
+    <color name="secondary_orange">#FF9800</color>
+    <color name="secondary_green">#4CAF50</color>
+    <color name="secondary_red">#F44336</color>
+
+    <!-- Background Colors -->
+    <color name="background_white">#FFFFFF</color>
+    <color name="background_light">#F5F5F5</color>
+    <color name="background_dark">#212121</color>
+
+    <!-- Text Colors -->
+    <color name="text_primary">#212121</color>
+    <color name="text_secondary">#757575</color>
+    <color name="text_hint">#BDBDBD</color>
+    <color name="text_white">#FFFFFF</color>
+    <color name="text_dark">#212121</color>
+    <color name="text_light">#757575</color>
+
+    <!-- Card Colors -->
+    <color name="card_background">#FFFFFF</color>
+    <color name="card_shadow">#E0E0E0</color>
+
+    <!-- Game Colors -->
+    <color name="game_correct">#4CAF50</color>
+    <color name="game_wrong">#F44336</color>
+    <color name="game_warning">#FF9800</color>
+
+    <!-- Item Colors -->
+    <color name="item_common">#9E9E9E</color>
+    <color name="item_rare">#2196F3</color>
+    <color name="item_epic">#9C27B0</color>
+    <color name="item_legendary">#FF9800</color>
+
+    <!-- Status Colors -->
+    <color name="status_online">#4CAF50</color>
+    <color name="status_offline">#9E9E9E</color>
+    <color name="status_away">#FF9800</color>
+
+    <!-- System Colors -->
+    <color name="divider">#E0E0E0</color>
+    <color name="ripple">#E3F2FD</color>
+
+    <!-- Transparent Colors -->
+    <color name="transparent">#00000000</color>
+    <color name="black_overlay">#66000000</color>
+    <color name="white_overlay">#66FFFFFF</color>
+
+    <!-- Info Colors -->
+    <color name="info_background">#E3F2FD</color>
+    <color name="warning_background">#FFF3E0</color>
+
+    <!-- Success Colors -->
+    <color name="success_color">#4CAF50</color>
+
+    <!-- Alias for common usage -->
+    <color name="primary_color">@color/primary_blue</color>
+    <color name="background_color">@color/background_light</color>
+    <color name="white">#FFFFFF</color>
 </resources>
