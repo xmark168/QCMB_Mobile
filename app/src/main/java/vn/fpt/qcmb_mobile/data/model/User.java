@@ -27,6 +27,9 @@ public class User {
     @SerializedName("token_balance")
     private int tokenBalance;
 
+    @SerializedName("score")
+    private int score;
+
     @SerializedName("created_at")
     private String createdAt;
 
@@ -39,6 +42,7 @@ public class User {
         this.password = password;
         this.role = "PLAYER";
         this.tokenBalance = 100;
+        this.score = 0;
     }
 
     public int getId() {
@@ -103,6 +107,14 @@ public class User {
 
     public void setTokenBalance(int tokenBalance) {
         this.tokenBalance = tokenBalance;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 
     public String getCreatedAt() {

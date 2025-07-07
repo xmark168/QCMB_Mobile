@@ -34,6 +34,7 @@ public class PreferenceManager {
     public void saveAuthToken(String accessToken, String role) {
         editor.putString(KEY_ACCESS_TOKEN, accessToken);
         editor.putString(KEY_USER_ROLE, role);
+        editor.apply();
     }
 
     public String getAccessToken() {

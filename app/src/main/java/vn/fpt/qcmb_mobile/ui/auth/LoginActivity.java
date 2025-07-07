@@ -117,6 +117,7 @@ public class LoginActivity extends AppCompatActivity {
                 authResponse.getAccessToken(),
                 role
         );
+        ApiClient.reset();
 
         Intent intent;
 

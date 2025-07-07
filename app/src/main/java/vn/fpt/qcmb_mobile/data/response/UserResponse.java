@@ -12,18 +12,12 @@ public class UserResponse {
     private String email;
     @SerializedName("role")
     private String role;
+    @SerializedName("avatar_url")
+    private String avatarUrl;
     @SerializedName("token_balance")
-    private String tokenBalance;
+    private int tokenBalance;
     @SerializedName("score")
-    private String score;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+    private int score;
 
     public int getId() {
         return id;
@@ -31,6 +25,14 @@ public class UserResponse {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getUsername() {
@@ -57,19 +59,27 @@ public class UserResponse {
         this.role = role;
     }
 
-    public String getTokenBalance() {
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
+    }
+
+    public int getTokenBalance() {
         return tokenBalance;
     }
 
-    public void setTokenBalance(String tokenBalance) {
+    public void setTokenBalance(int tokenBalance) {
         this.tokenBalance = tokenBalance;
     }
 
-    public String getScore() {
+    public int getScore() {
         return score;
     }
 
-    public void setScore(String score) {
+    public void setScore(int score) {
         this.score = score;
     }
 }
