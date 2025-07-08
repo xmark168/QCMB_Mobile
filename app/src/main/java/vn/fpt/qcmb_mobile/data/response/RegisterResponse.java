@@ -4,8 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import vn.fpt.qcmb_mobile.data.model.User;
 
-public class AuthResponse{
-
+public class RegisterResponse {
     @SerializedName("access_token")
     private String accessToken;
 

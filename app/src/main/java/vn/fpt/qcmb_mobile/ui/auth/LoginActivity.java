@@ -53,8 +53,13 @@ public class LoginActivity extends AppCompatActivity {
 
     private void bindingAction() {
         binding.btnLogin.setOnClickListener(v -> performLogin());
-
-
+        binding.tvRegister.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+            startActivity(intent);
+        });
+        binding.tvForgotPassword.setOnClickListener(v -> {
+            startActivity(new Intent(LoginActivity.this, ForgotPasswordActivity.class));
+        });
     }
 
     private void performLogin() {
@@ -113,9 +118,10 @@ public class LoginActivity extends AppCompatActivity {
         String role = decodeRoleFromToken(authResponse.getAccessToken());
 
         // Lưu token và role
-        preferenceManager.saveAuthToken(
+        preferenceManager.saveAuthData(
                 authResponse.getAccessToken(),
-                role
+                authResponse.getTokenType(),
+                null
         );
         ApiClient.reset();
 
