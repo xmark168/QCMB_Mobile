@@ -15,5 +15,12 @@ public interface AuthApiService {
     @GET("auth/currentUser")
     Call<UserResponse> getCurrentUser();
 
+    @POST("auth/forgot-password")
+    Call<ForgotPasswordResponse> forgotPassword(@Body ForgotPasswordRequest forgotPasswordRequest);
 
+    @POST("auth/verify-otp")
+    Call<VerifyOtpResponse> verifyOtp(@Body VerifyOtpRequest request);
+
+    @POST("auth/reset-password")
+    Call<GenericResponse> resetPassword(@Body ResetPasswordRequest request);
 }

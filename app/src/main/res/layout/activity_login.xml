@@ -107,7 +107,8 @@
                     android:focusable="true"
                     android:padding="8dp"
                     android:text="Quên mật khẩu?"
-                    android:textColor="@color/primary_blue" />
+                    android:textColor="@color/primary_blue"
+                    android:background="?android:attr/selectableItemBackground" />
 
                 <!-- Login Button -->
                 <com.google.android.material.button.MaterialButton
