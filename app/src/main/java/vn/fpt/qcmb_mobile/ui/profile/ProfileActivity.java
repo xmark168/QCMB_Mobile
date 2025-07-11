@@ -85,15 +85,15 @@ public class ProfileActivity extends AppCompatActivity {
             finish();
         });
 
-//        cardEditProfile.setOnClickListener(v -> {
-//            Intent intent = new Intent(this, EditProfileActivity.class);
-//            startActivity(intent);
-//        });
-//
-//        cardChangePassword.setOnClickListener(v -> {
-//            Intent intent = new Intent(this, ChangePasswordActivity.class);
-//            startActivity(intent);
-//        });
+        cardEditProfile.setOnClickListener(v -> {
+            Intent intent = new Intent(this, EditProfileActivity.class);
+            startActivity(intent);
+        });
+
+        cardChangePassword.setOnClickListener(v -> {
+            Intent intent = new Intent(this, ChangePasswordActivity.class);
+            startActivity(intent);
+        });
 
         cardLogout.setOnClickListener(v -> {
             new AlertDialog.Builder(this)

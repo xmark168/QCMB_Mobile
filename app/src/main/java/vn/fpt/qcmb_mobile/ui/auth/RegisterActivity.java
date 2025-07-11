@@ -51,7 +51,7 @@ public class RegisterActivity extends AppCompatActivity {
     private void bindingView() {
         etName = findViewById(R.id.etName);
         etEmail = findViewById(R.id.etUserEmail);
-        etUsername = findViewById(R.id.etUsername);
+        etUsername = findViewById(R.id.etUserName);
         etPassword = findViewById(R.id.etPassword);
         etConfirmPassword = findViewById(R.id.etConfirmPassword);
 
