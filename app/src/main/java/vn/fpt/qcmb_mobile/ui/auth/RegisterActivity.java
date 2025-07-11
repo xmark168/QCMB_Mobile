@@ -11,9 +11,6 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
@@ -24,7 +21,6 @@ import vn.fpt.qcmb_mobile.data.api.ApiClient;
 import vn.fpt.qcmb_mobile.data.api.AuthApiService;
 import vn.fpt.qcmb_mobile.data.request.RegisterRequest;
 import vn.fpt.qcmb_mobile.data.response.AuthResponse;
-import vn.fpt.qcmb_mobile.data.response.RegisterResponse;
 import vn.fpt.qcmb_mobile.ui.dashboard.DashboardActivity;
 import vn.fpt.qcmb_mobile.utils.PreferenceManager;
 
@@ -54,7 +50,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void bindingView() {
         etName = findViewById(R.id.etName);
-        etEmail = findViewById(R.id.etEmail);
+        etEmail = findViewById(R.id.etUserEmail);
         etUsername = findViewById(R.id.etUsername);
         etPassword = findViewById(R.id.etPassword);
         etConfirmPassword = findViewById(R.id.etConfirmPassword);
