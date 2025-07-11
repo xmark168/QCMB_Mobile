@@ -12,6 +12,8 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.List;
+
 import retrofit2.Response;
 import vn.fpt.qcmb_mobile.R;
 import vn.fpt.qcmb_mobile.data.api.ApiClient;
@@ -60,6 +62,10 @@ public class StoreActivity extends AppCompatActivity {
         adapter = new StoreItemAdapter(this, this::purchaseItem);
         rvStoreItems.setLayoutManager(new LinearLayoutManager(this));
         rvStoreItems.setAdapter(adapter);
+
+        tvTokenBalance.setText("Token hiện tại: " + preferenceManager.getTokenBalance());
+
+        fetchStoreItem();
     }
 
     private void purchaseItem(StoreItemListResponse.StoreItem item) {
@@ -93,18 +99,58 @@ public class StoreActivity extends AppCompatActivity {
                             int newBalance = purchaseResponse.getData().getNewBalance();
                             preferenceManager.updateTokenBalance(newBalance);
                             updateTokenDisplay();
+                            Toast.makeText(StoreActivity.this, "✅ Đã mua " + item.getName(), Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(StoreActivity.this, "Lỗi mua hàng", Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<PurchaseResponse> call, Throwable t) {
-
+                        Toast.makeText(StoreActivity.this, "Lỗi: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    private void fetchStoreItem() {
+        // Gọi API để lấy store items từ server
+        String token = preferenceManager.getFullToken();
+        storeApiService.getStoreItems(token).enqueue(new Callback<StoreItemListResponse>() {
+            @Override
+            public void onResponse(Call<StoreItemListResponse> call, Response<StoreItemListResponse> response) {
+                if (response.code() == 401) {
+                    Toast.makeText(StoreActivity.this, "Vui lòng đăng nhập lại", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (response.isSuccessful() && response.body() != null) {
+                    List<StoreItemListResponse.StoreItem> items = response.body().getItems();
+                    if (items != null) {
+                        adapter.setItems(items);
+                    } else {
+                        Toast.makeText(StoreActivity.this, "Không có items nào", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(StoreActivity.this, "Lỗi tải store items", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<StoreItemListResponse> call, Throwable t) {
+                Toast.makeText(StoreActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
     public void updateTokenDisplay() {
         int balance = preferenceManager.getTokenBalance();
         tvTokenBalance.setText("Token hiện tại: " + balance);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateTokenDisplay();
     }
 }
