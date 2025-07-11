@@ -86,11 +86,11 @@ public class AdminDashboardActivity extends AppCompatActivity {
             Intent intent = new Intent(this, TopicManagementActivity.class);
             startActivity(intent);
         });
-//
-//        cardQuestionManagement.setOnClickListener(v -> {
-//            Intent intent = new Intent(this, QuestionManagementActivity.class);
-//            startActivity(intent);
-//        });
+
+        cardQuestionManagement.setOnClickListener(v -> {
+            Intent intent = new Intent(this, QuestionManagementActivity.class);
+            startActivity(intent);
+        });
 //
 //        cardUserManagement.setOnClickListener(v -> {
 //            Intent intent = new Intent(this, UserManagementActivity.class);

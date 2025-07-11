@@ -2,53 +2,111 @@ package vn.fpt.qcmb_mobile.data.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class Question {
     @SerializedName("id")
-    private int id;
-    
+    private String id;
+
     @SerializedName("topic_id")
-    private int topicId;
-    
+    private String topicId;
+
     @SerializedName("content")
     private String content;
-    
+
     @SerializedName("difficulty")
-    private String difficulty;
-    
+    private int difficulty;
+
     @SerializedName("correct_answer")
     private String correctAnswer;
-    
+
     @SerializedName("wrong_answer_1")
     private String wrongAnswer1;
-    
+
     @SerializedName("wrong_answer_2")
     private String wrongAnswer2;
-    
+
     @SerializedName("wrong_answer_3")
     private String wrongAnswer3;
-    
+
     @SerializedName("created_at")
     private String createdAt;
 
-    // Constructor
-    public Question() {}
+    // Dữ liệu bổ sung cho hiển thị UI/admin
+    private String category = "Tổng hợp";
+    private int points = 10;
 
-    // Getters and Setters
-    public int getId() {
+    // Danh sách trộn đáp án
+    private List<String> shuffledOptions;
+    private int correctAnswerIndex;
+
+    public Question() {
+        // Mặc định
+    }
+
+    // Constructor đầy đủ (dùng khi khởi tạo từ admin)
+    public Question(String id, String content, List<String> options, int correctAnswerIndex,
+                    String category, int difficulty, int points) {
+        this.id = id;
+        this.content = content;
+        this.category = category;
+        this.difficulty = difficulty;
+        this.points = points;
+
+        if (options != null && options.size() >= 4) {
+            this.correctAnswer = options.get(correctAnswerIndex);
+
+            List<String> wrongs = new ArrayList<>();
+            for (int i = 0; i < options.size(); i++) {
+                if (i != correctAnswerIndex) {
+                    wrongs.add(options.get(i));
+                }
+            }
+
+            this.wrongAnswer1 = wrongs.get(0);
+            this.wrongAnswer2 = wrongs.get(1);
+            this.wrongAnswer3 = wrongs.get(2);
+        }
+
+        shuffleOptions(); // tạo danh sách options trộn
+    }
+
+    // Trộn đáp án
+    private void shuffleOptions() {
+        shuffledOptions = new ArrayList<>();
+        shuffledOptions.add(correctAnswer);
+        shuffledOptions.add(wrongAnswer1);
+        shuffledOptions.add(wrongAnswer2);
+        shuffledOptions.add(wrongAnswer3);
+        Collections.shuffle(shuffledOptions);
+
+        // Lưu lại vị trí đúng
+        correctAnswerIndex = shuffledOptions.indexOf(correctAnswer);
+    }
+
+    // Getter / Setter
+
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getTopicId() {
+    public String getTopicId() {
         return topicId;
     }
 
-    public void setTopicId(int topicId) {
+    public void setTopicId(String topicId) {
         this.topicId = topicId;
     }
+    public String getTopic_id() {
+        return topicId;
+    }
+
+    public void setTopic_id(String topic_id) {
+        this.topicId = topic_id;
+    }
+
 
     public String getContent() {
         return content;
@@ -58,11 +116,11 @@ public class Question {
         this.content = content;
     }
 
-    public String getDifficulty() {
+    public int getDifficulty() {
         return difficulty;
     }
 
-    public void setDifficulty(String difficulty) {
+    public void setDifficulty(int difficulty) {
         this.difficulty = difficulty;
     }
 
@@ -105,89 +163,58 @@ public class Question {
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
-    
-    // Helper methods for admin functionality
-    private String category = "Tổng hợp";
-    private int points = 10;
-    
-    public String getQuestion() {
-        return content;
-    }
-    
-    public void setQuestion(String question) {
-        this.content = question;
-    }
-    
+
     public String getCategory() {
         return category;
     }
-    
+
     public void setCategory(String category) {
         this.category = category;
     }
-    
+
     public int getPoints() {
         return points;
     }
-    
+
     public void setPoints(int points) {
         this.points = points;
     }
-    
-    public java.util.List<String> getOptions() {
-        java.util.List<String> options = new java.util.ArrayList<>();
-        options.add(correctAnswer);
-        options.add(wrongAnswer1);
-        options.add(wrongAnswer2); 
-        options.add(wrongAnswer3);
-        return options;
-    }
-    
-    public void setOptions(java.util.List<String> options) {
-        if (options.size() >= 4) {
-            this.correctAnswer = options.get(0);
-            this.wrongAnswer1 = options.get(1);
-            this.wrongAnswer2 = options.get(2);
-            this.wrongAnswer3 = options.get(3);
+
+    public List<String> getOptions() {
+        if (shuffledOptions == null) {
+            shuffleOptions();
         }
+        return shuffledOptions;
     }
-    
+
     public int getCorrectAnswerIndex() {
-        return 0; // Correct answer is always first in our setup
+        return correctAnswerIndex;
     }
-    
-    public void setCorrectAnswer(int index) {
-        // For admin, we'll keep correct answer at index 0
-        // This is a simplified approach
-    }
-    
-    // Constructor for admin use
-    public Question(int id, String question, java.util.List<String> options, int correctAnswerIndex,
-                    String category, String difficulty, int points) {
-        this.id = id;
-        this.content = question;
-        this.category = category;
-        this.difficulty = difficulty;
-        this.points = points;
-        
-        if (options.size() >= 4) {
-            // Arrange options so correct answer is at index 0
-            String correctAns = options.get(correctAnswerIndex);
-            this.correctAnswer = correctAns;
-            
-            // Add wrong answers
-            java.util.List<String> wrongAnswers = new java.util.ArrayList<>();
+
+    // Cập nhật danh sách đáp án (nếu cần)
+    public void setOptions(List<String> options, int correctAnswerIndex) {
+        if (options != null && options.size() >= 4) {
+            this.correctAnswer = options.get(correctAnswerIndex);
+
+            List<String> wrongs = new ArrayList<>();
             for (int i = 0; i < options.size(); i++) {
                 if (i != correctAnswerIndex) {
-                    wrongAnswers.add(options.get(i));
+                    wrongs.add(options.get(i));
                 }
             }
-            
-            if (wrongAnswers.size() >= 3) {
-                this.wrongAnswer1 = wrongAnswers.get(0);
-                this.wrongAnswer2 = wrongAnswers.get(1);
-                this.wrongAnswer3 = wrongAnswers.get(2);
-            }
+
+            this.wrongAnswer1 = wrongs.get(0);
+            this.wrongAnswer2 = wrongs.get(1);
+            this.wrongAnswer3 = wrongs.get(2);
         }
+
+        shuffleOptions(); // shuffle lại nếu cập nhật
     }
-} 
+    public String getQuestion() {
+        return content;
+    }
+
+    public void setQuestion(String question) {
+        this.content = question;
+    }
+}

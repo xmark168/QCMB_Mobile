@@ -30,6 +30,17 @@ public interface AdminApiService {
     @DELETE("topics/{id}")
     Call<Void> deleteTopic(@Path("id") String id);
 
-//    @GET("api/questions/")
-//    Call<List<Question>> getAllQuestions();
+    @GET("questions")
+    Call<List<Question>> getQuestions();
+
+    @POST("questions")
+    Call<Question> addQuestion(@Body Question question);
+
+    @PUT("questions/{id}")
+    Call<Question> updateQuestion(@Path("id") String id, @Body Question question);
+
+    @DELETE("questions/{id}")
+    Call<Void> deleteQuestion(@Path("id") String id);
+
+
 }
