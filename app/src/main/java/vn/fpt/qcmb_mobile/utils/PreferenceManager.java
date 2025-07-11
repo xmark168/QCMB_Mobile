@@ -63,4 +63,8 @@ public class PreferenceManager {
         editor.clear();
         editor.apply();
     }
+
+    public String getString(String key, String defaultValue) {
+        return sharedPreferences.getString(key, defaultValue);
+    }
 }

@@ -44,7 +44,7 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
-
+    implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
     implementation(libs.gson)
     implementation(libs.swiperefreshlayout)
     implementation(libs.retrofit)
