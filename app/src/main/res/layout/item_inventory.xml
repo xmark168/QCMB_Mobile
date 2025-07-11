@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardItem"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="6dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="2dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="12dp"
+        android:gravity="center">
+
+        <!-- Item Icon với Quantity Badge -->
+        <FrameLayout
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginBottom="8dp">
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="1dp"
+                app:cardBackgroundColor="#1976D2">
+
+                <TextView
+                    android:id="@+id/tvEmojiIcon"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="⚡"
+                    android:textSize="18sp"
+                    android:textColor="@color/text_white" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Quantity Badge -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardQuantityBadge"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="top|end"
+                android:layout_marginTop="-2dp"
+                android:layout_marginEnd="-2dp"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="3dp"
+                app:cardBackgroundColor="#FF4444"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/tvQuantity"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="x2"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_white"
+                    android:gravity="center" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </FrameLayout>
+
+        <!-- Item Name -->
+        <TextView
+            android:id="@+id/tvItemName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="🛡️ Skip Turn"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="@color/text_primary"
+            android:gravity="center"
+            android:layout_marginBottom="4dp"
+            android:maxLines="1"
+            android:ellipsize="end" />
+
+        <!-- Item Effect -->
+        <TextView
+            android:id="@+id/tvItemEffect"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Bỏ qua lượt của đối thủ"
+            android:textSize="11sp"
+            android:textColor="@color/text_secondary"
+            android:gravity="center"
+            android:maxLines="2"
+            android:ellipsize="end" />
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

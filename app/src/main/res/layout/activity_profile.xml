@@ -1,0 +1,457 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_light">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Header Section -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/primary_blue"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <!-- Top Bar with Back Button -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="16dp">
+
+                <ImageButton
+                    android:id="@+id/btnBack"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_arrow_back"
+                    app:tint="@color/text_white"
+                    android:contentDescription="Quay lại" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Hồ Sơ"
+                    android:textColor="@color/text_white"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:gravity="center" />
+
+                <View
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+            </LinearLayout>
+
+            <!-- Profile Header -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <!-- Avatar -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    app:cardCornerRadius="40dp"
+                    app:cardElevation="4dp"
+                    android:layout_marginEnd="16dp"
+                    app:cardBackgroundColor="@android:color/transparent">
+
+                    <ImageView
+                        android:id="@+id/ivAvatar"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/ic_profile"
+                        android:scaleType="centerCrop"
+                        android:contentDescription="Avatar" />
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- User Info -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tvUserNameProfile"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Người dùng"
+                        android:textColor="@color/text_white"
+                        android:textSize="22sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="4dp" />
+
+                    <TextView
+                        android:id="@+id/tvUserEmailProfile"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="user@example.com"
+                        android:textColor="@color/background_white"
+                        android:textSize="14sp"
+                        android:layout_marginBottom="8dp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:background="@drawable/bg_token_balance"
+                        android:padding="8dp">
+
+                        <ImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:src="@drawable/ic_token"
+                            android:layout_marginEnd="6dp"
+                            android:contentDescription="Token" />
+
+                        <TextView
+                            android:id="@+id/tvTokenBalance"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="1000"
+                            android:textColor="@color/text_white"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Stats Section -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Thống Kê Game"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_primary"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Stats Cards Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="6dp"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="2dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp"
+                        android:gravity="center">
+
+                        <TextView
+                            android:id="@+id/tvGamesPlayed"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:textSize="24sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/primary_blue" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Games Played"
+                            android:textSize="12sp"
+                            android:textColor="@color/text_secondary" />
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="6dp"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="2dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp"
+                        android:gravity="center">
+
+                        <TextView
+                            android:id="@+id/tvTotalScore"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:textSize="24sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/secondary_orange" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Total Score"
+                            android:textSize="12sp"
+                            android:textColor="@color/text_secondary" />
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Inventory Section -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Kho Đồ"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_primary" />
+
+                <TextView
+                    android:id="@+id/tvInventoryCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0 items"
+                    android:textSize="14sp"
+                    android:textColor="@color/text_secondary" />
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvInventory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardEmptyInventory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp"
+                android:layout_marginTop="8dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="24dp"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/ic_store"
+                        app:tint="@color/text_secondary"
+                        android:layout_marginBottom="8dp"
+                        android:contentDescription="Empty inventory" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Kho đồ trống"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/text_secondary"
+                        android:layout_marginBottom="4dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Hãy vào cửa hàng để mua items!"
+                        android:textSize="14sp"
+                        android:textColor="@color/text_secondary"
+                        android:gravity="center" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+
+        <!-- Menu Section -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tùy Chọn"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_primary"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Edit Profile -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardEditProfile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="16dp"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_profile"
+                        app:tint="@color/primary_blue"
+                        android:layout_marginEnd="16dp"
+                        android:contentDescription="Edit Profile" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Chỉnh Sửa Hồ Sơ"
+                        android:textSize="16sp"
+                        android:textColor="@color/text_primary" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Change Password -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardChangePassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="16dp"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_lock"
+                        app:tint="@color/secondary_orange"
+                        android:layout_marginEnd="16dp"
+                        android:contentDescription="Change Password" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Đổi Mật Khẩu"
+                        android:textSize="16sp"
+                        android:textColor="@color/text_primary" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Logout -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardLogout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="16dp"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_logout"
+                        app:tint="@color/secondary_red"
+                        android:layout_marginEnd="16dp"
+                        android:contentDescription="Logout" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Đăng Xuất"
+                        android:textSize="16sp"
+                        android:textColor="@color/secondary_red" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

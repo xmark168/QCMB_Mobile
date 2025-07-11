@@ -23,4 +23,13 @@ public interface AuthApiService {
 
     @POST("auth/reset-password")
     Call<GenericResponse> resetPassword(@Body ResetPasswordRequest request);
+
+    @PUT("auth/profile")
+    Call<GenericResponse> updateProfile(@Body UpdateProfileRequest request);
+
+    @PUT("auth/password")
+    Call<GenericResponse> changePassword(@Body ChangePasswordRequest request);
+
+    @PUT("auth/avatar")
+    Call<GenericResponse> updateAvatar(@Body UpdateAvatarRequest request);
 }
