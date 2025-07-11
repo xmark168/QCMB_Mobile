@@ -78,16 +78,17 @@ public class StoreItemAdapter extends RecyclerView.Adapter<StoreItemAdapter.Stor
         MaterialButton btnBuy;
         boolean isHeader;
         TextView headerTitle;
+        
         public StoreItemViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            // Kiểm tra view type
-            if (itemView.findViewById(R.id.tvItemName) != null) {
-                // Đây là header
+            // Kiểm tra view type dựa trên class của itemView
+            if (itemView instanceof TextView) {
+                // Đây là header (TextView trực tiếp)
                 isHeader = true;
                 headerTitle = (TextView) itemView;
             } else {
-                // Đây là item
+                // Đây là item (LinearLayout chứa các view con)
                 isHeader = false;
                 tvEmojiIcon = itemView.findViewById(R.id.tvEmojiIcon);
                 tvName = itemView.findViewById(R.id.tvItemName);
