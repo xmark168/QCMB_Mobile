@@ -161,6 +161,10 @@ public class EditProfileActivity extends AppCompatActivity {
                 try {
                     loadImageIntoAvatar(Uri.parse(url));
                     preferenceManager.saveAvatarUrl(url);
+
+                    // update avatar
+                    updateAvatar(enteredAvatarUrl);
+
                     dialog.dismiss();
                 } catch (Exception e) {
                     etUrl.setError("URL không hợp lệ");
@@ -179,9 +183,6 @@ public class EditProfileActivity extends AppCompatActivity {
 
             // update profile
             updateProfile(name, email);
-
-            // update avatar
-            updateAvatar(enteredAvatarUrl);
         }
     }
 

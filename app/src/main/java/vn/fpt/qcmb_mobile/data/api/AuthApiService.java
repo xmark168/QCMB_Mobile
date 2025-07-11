@@ -28,7 +28,7 @@ public interface AuthApiService {
     Call<GenericResponse> updateProfile(@Body UpdateProfileRequest request);
 
     @PUT("auth/password")
-    Call<GenericResponse> changPassword(@Body ChangePasswordRequest request);
+    Call<GenericResponse> changePassword(@Body ChangePasswordRequest request);
 
     @PUT("auth/avatar")
     Call<GenericResponse> updateAvatar(@Body UpdateAvatarRequest request);

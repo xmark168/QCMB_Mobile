@@ -17,6 +17,7 @@ import vn.fpt.qcmb_mobile.data.response.UserResponse;
 import vn.fpt.qcmb_mobile.databinding.ActivityDashboardBinding;
 import vn.fpt.qcmb_mobile.ui.auth.LoginActivity;
 import vn.fpt.qcmb_mobile.ui.profile.ProfileActivity;
+import vn.fpt.qcmb_mobile.ui.store.StoreActivity;
 import vn.fpt.qcmb_mobile.utils.PreferenceManager;
 
 import retrofit2.Call;
@@ -80,7 +81,12 @@ public class DashboardActivity extends AppCompatActivity {
             showSettingMenu();
         });
 
-//        chuyển trang
+        // Store
+        binding.cardStore.setOnClickListener(v -> {
+            startActivity(new Intent(this, StoreActivity.class));
+        });
+
+//        Profile
         binding.cardProfile.setOnClickListener(v -> {
             startActivity(new Intent(this, ProfileActivity.class));
         });
