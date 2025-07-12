@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,9 +34,11 @@ import vn.fpt.qcmb_mobile.data.api.ApiClient;
 import vn.fpt.qcmb_mobile.data.api.AuthApiService;
 import vn.fpt.qcmb_mobile.data.api.LobbyApiService;
 import vn.fpt.qcmb_mobile.data.api.TopicApiService;
+import vn.fpt.qcmb_mobile.data.model.ErrorResponse;
 import vn.fpt.qcmb_mobile.data.model.Lobby;
 import vn.fpt.qcmb_mobile.data.model.MatchPlayer;
 import vn.fpt.qcmb_mobile.data.model.Topic;
+import vn.fpt.qcmb_mobile.data.request.JoinCodeRequest;
 import vn.fpt.qcmb_mobile.data.request.JoinRequest;
 import vn.fpt.qcmb_mobile.data.request.LobbyCreate;
 import vn.fpt.qcmb_mobile.data.response.TopicResponse;
@@ -302,26 +305,39 @@ public class LobbyActivity extends AppCompatActivity {
     }
 
     private void joinRoomByCode() {
-//        String roomCode = etRoomCode.getText().toString().trim().toUpperCase();
-//
-//        if (roomCode.isEmpty()) {
-//            Toast.makeText(this, "❌ Vui lòng nhập mã phòng", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
-//
-//        if (roomCode.length() != 6) {
-//            Toast.makeText(this, "❌ Mã phòng phải có 6 ký tự", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
-//
-//        // Mock validation
-//        boolean roomExists = roomCode.startsWith("ABC") || roomCode.startsWith("XYZ");
-//
-//        if (roomExists) {
-//            Toast.makeText(this,
-//                    "✅ Đang tham gia phòng " + roomCode + "...",
-//                    Toast.LENGTH_SHORT).show();
-//
+        String roomCode = etRoomCode.getText().toString().trim().toUpperCase();
+
+        if (roomCode.isEmpty()) {
+            Toast.makeText(this, "Vui lòng nhập mã phòng", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (roomCode.length() != 6) {
+            Toast.makeText(this, "Mã phòng phải có 6 ký tự", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
+        Call<MatchPlayer> call = lobbyApiService.joinLobbyByCode(roomCode);
+
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(@NonNull Call<MatchPlayer> call, @NonNull Response<MatchPlayer> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    showError("Tham gia thảnh công: "+roomCode);
+                } else {
+                    Gson gson = new Gson();
+                    ErrorResponse error = gson.fromJson(
+                            response.errorBody().charStream(), ErrorResponse.class
+                    );
+                    String message = error.getDetail();
+                    showError(message);
+                }
+            }
+            public void onFailure(@NonNull Call<MatchPlayer> call, @NonNull Throwable t) {
+                showError("Không thể tham gia phòng lúc này. Vui lòng thử lại sau!");
+            }
+        });
 //            // Navigate directly to game
 //            Intent intent = new Intent(this, GameActivity.class);
 //            intent.putExtra("room_code", roomCode);
