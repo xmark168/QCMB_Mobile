@@ -73,7 +73,7 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
             tvOptionB = itemView.findViewById(R.id.tvOptionB);
             tvOptionC = itemView.findViewById(R.id.tvOptionC);
             tvOptionD = itemView.findViewById(R.id.tvOptionD);
-            tvQuestionId = itemView.findViewById(R.id.tvQuestionId);
+
             btnEditQuestion = itemView.findViewById(R.id.btnEditQuestion);
             btnDeleteQuestion = itemView.findViewById(R.id.btnDeleteQuestion);
         }

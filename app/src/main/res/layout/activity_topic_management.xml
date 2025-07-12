@@ -44,8 +44,8 @@
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fabAddTopic"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:src="@drawable/ic_add_room"
             app:backgroundTint="@color/secondary_green"
             app:tint="@color/text_white"
@@ -114,4 +114,4 @@
 
     </LinearLayout>
 
-</LinearLayout> 
+</LinearLayout>
