@@ -25,6 +25,9 @@
             android:name=".ui.store.StoreActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.store.PaymentWebViewActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.profile.ProfileActivity"
             android:exported="false" />
         <activity
