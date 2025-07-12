@@ -1,13 +1,9 @@
-package vn.fpt.qcmb_mobile.data.model;
+package vn.fpt.qcmb_mobile.data.response;
 
- import com.google.gson.annotations.SerializedName;
-import java.util.List;
+import com.google.gson.annotations.SerializedName;
+
 import java.util.UUID;
-
-import vn.fpt.qcmb_mobile.data.model.Question;
-
-public class Topic {
-
+public class TopicResponse {
     @SerializedName("id")
     private UUID id;
 
@@ -20,18 +16,15 @@ public class Topic {
     @SerializedName("created_at")
     private String createdAt;
 
-    @SerializedName("questions")
-    private List<Question> questions;
 
     // Constructors
-    public Topic() {}
+    public TopicResponse() {}
 
-    public Topic(UUID id, String name, String description, String createdAt, List<Question> questions) {
+    public TopicResponse(UUID id, String name, String description, String createdAt) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.createdAt = createdAt;
-        this.questions = questions;
     }
 
     // Getters and Setters
@@ -67,11 +60,5 @@ public class Topic {
         this.createdAt = createdAt;
     }
 
-    public List<Question> getQuestions() {
-        return questions;
-    }
 
-    public void setQuestions(List<Question> questions) {
-        this.questions = questions;
-    }
 }

@@ -98,7 +98,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         tvTimer = findViewById(R.id.tvTimer);
 
         preferenceManager = new PreferenceManager(getApplicationContext());
-        authApiService = ApiClient.getClient(preferenceManager).create(AuthApiService.class);
+        authApiService = ApiClient.getClient(preferenceManager,this).create(AuthApiService.class);
     }
 
     private void bindingAction() {

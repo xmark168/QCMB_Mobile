@@ -2,7 +2,9 @@ package vn.fpt.qcmb_mobile.ui.game;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -10,6 +12,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,7 +24,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import vn.fpt.qcmb_mobile.R;
+import vn.fpt.qcmb_mobile.data.api.ApiClient;
+import vn.fpt.qcmb_mobile.data.api.AuthApiService;
+import vn.fpt.qcmb_mobile.data.api.TopicApiService;
+import vn.fpt.qcmb_mobile.data.response.TopicResponse;
+import vn.fpt.qcmb_mobile.data.response.UserResponse;
 import vn.fpt.qcmb_mobile.ui.dashboard.DashboardActivity;
 import vn.fpt.qcmb_mobile.utils.PreferenceManager;
 
@@ -56,6 +67,9 @@ public class LobbyActivity extends AppCompatActivity {
     private RoomAdapter roomAdapter;
     private List<Room> availableRooms;
     private boolean isCreateTabActive = true;
+    private List<TopicResponse> topics;
+
+    private TopicApiService topicApiService;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +84,9 @@ public class LobbyActivity extends AppCompatActivity {
         roomAdapter = new RoomAdapter(this, availableRooms, this::joinRoom);
         rvAvailableRooms.setLayoutManager(new LinearLayoutManager(this));
         rvAvailableRooms.setAdapter(roomAdapter);
+        initApiServices();
+        setupTopics();
+        BindingAction();
     }
 
     private void initViews() {
@@ -147,9 +164,41 @@ public class LobbyActivity extends AppCompatActivity {
 
 
     }
+    private void initApiServices()
+    {
+        topicApiService = ApiClient.getClient(preferenceManager,this).create(TopicApiService.class);
+
+    }
     private void setupTopics()
     {
+        Call<List<TopicResponse>> call = topicApiService.getAllTopic(0,10);
 
+
+
+        call.enqueue(new Callback<>() {
+
+            @Override
+            public void onResponse(@NonNull Call<List<TopicResponse>> call, @NonNull Response<List<TopicResponse>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+
+                    topics = response.body();
+                    TopicSpinnerAdapter adapter = new TopicSpinnerAdapter(LobbyActivity.this, topics);
+                    Spinner topicSpinner = findViewById(R.id.spinnerTopic);
+                    topicSpinner.setAdapter(adapter);
+                } else {
+                    showError("Lỗi khi lấy topic");
+                }
+            }
+
+            public void onFailure(Call<List<TopicResponse>> call, Throwable t) {
+                showError("Error server");
+            }
+        });
+
+    }
+    private void showError(String message)
+    {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
     private void switchToCreateTab() {
         if (isCreateTabActive) return;
@@ -175,23 +224,8 @@ public class LobbyActivity extends AppCompatActivity {
             return;
         }
 
-        // Generate room code
-//        String roomCode = generateRoomCode();
-//        String ownerName = preferenceManager.getUserName();
-//        if (ownerName.isEmpty()) ownerName = "Người dùng";
-//
-//        Toast.makeText(this,
-//                "✅ Đã tạo phòng thành công!\n" +
-//                        "📝 Tên: " + roomName + "\n" +
-//                        "🔢 Mã: " + roomCode + "\n" +
-//                        "👥 Tối đa: " + maxPlayers + " người\n" +
-//                        "📚 Chủ đề: " + topic + "\n" +
-//                        "🃏 Bài khởi tạo: " + currentHandSize + " lá\n" +
-//                        "⏰ Thời gian turn: " + currentTurnTime + "s\n" +
-//                        "⏱️ Thời gian trận đấu: " + currentMatchTime + " phút\n" +
-//                        "🎒 Max items: " + currentMaxItems,
-//                Toast.LENGTH_SHORT).show();
-//
+
+
 //        // Navigate to game room
 //        Intent intent = new Intent(this, GameActivity.class);
 //        intent.putExtra("room_code", roomCode);

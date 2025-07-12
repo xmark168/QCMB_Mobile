@@ -45,7 +45,7 @@ public class DashboardActivity extends AppCompatActivity {
 
     private void bindingView() {
         preferenceManager = new PreferenceManager(this);
-        authApiService = ApiClient.getClient(preferenceManager).create(AuthApiService.class);
+        authApiService = ApiClient.getClient(preferenceManager,this).create(AuthApiService.class);
 
     }
 
