@@ -72,7 +72,7 @@ public class ProfileActivity extends AppCompatActivity {
         rvInventory = findViewById(R.id.rvInventory);
 
         preferenceManager = new PreferenceManager(this);
-        storeApiService = ApiClient.getClient(preferenceManager).create(StoreApiService.class);
+        storeApiService = ApiClient.getClient(preferenceManager,this).create(StoreApiService.class);
     }
 
     private void bindingAction() {

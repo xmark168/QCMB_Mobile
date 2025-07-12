@@ -74,7 +74,7 @@ public class TopicManagementActivity extends AppCompatActivity implements TopicA
 
     private void initServices() {
         PreferenceManager pref = new PreferenceManager(this); // Khởi tạo PreferenceManager
-        adminApiService = ApiClient.getClient(pref).create(AdminApiService.class); // Sử dụng xác thực
+        adminApiService = ApiClient.getClient(pref,this).create(AdminApiService.class); // Sử dụng xác thực
         allTopics = new ArrayList<>();
         filteredTopics = new ArrayList<>();
     }
@@ -259,7 +259,7 @@ public class TopicManagementActivity extends AppCompatActivity implements TopicA
 
     @Override
     public void onDeleteTopic(Topic topic) {
-        if (topic.getId() == null || topic.getId().isEmpty()) {
+        if (topic.getId() == null || topic.getId().toString().isEmpty()) {
             Log.e("DELETE_ERROR", "ID topic không hợp lệ: " + topic.getId());
             Toast.makeText(this, "❌ ID topic không hợp lệ", Toast.LENGTH_SHORT).show();
             return;

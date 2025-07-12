@@ -14,7 +14,7 @@ public class Question {
     private String id;
 
     @SerializedName("topic_id")
-    private String topicId;
+    private UUID topicId;
 
     @SerializedName("content")
     private String content;
@@ -96,21 +96,13 @@ public class Question {
         return id;
     }
 
-    public String getTopicId() {
+    public UUID getTopicId() {
         return topicId;
     }
 
-    public void setTopicId(String topicId) {
+    public void setTopicId(UUID topicId) {
         this.topicId = topicId;
     }
-    public String getTopic_id() {
-        return topicId;
-    }
-
-    public void setTopic_id(String topic_id) {
-        this.topicId = topic_id;
-    }
-
 
     public String getContent() {
         return content;
