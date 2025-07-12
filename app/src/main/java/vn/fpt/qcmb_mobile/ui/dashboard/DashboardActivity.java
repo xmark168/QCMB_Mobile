@@ -16,6 +16,8 @@ import vn.fpt.qcmb_mobile.data.api.AuthApiService;
 import vn.fpt.qcmb_mobile.data.response.UserResponse;
 import vn.fpt.qcmb_mobile.databinding.ActivityDashboardBinding;
 import vn.fpt.qcmb_mobile.ui.auth.LoginActivity;
+import vn.fpt.qcmb_mobile.ui.profile.ProfileActivity;
+import vn.fpt.qcmb_mobile.ui.store.StoreActivity;
 import vn.fpt.qcmb_mobile.utils.PreferenceManager;
 
 import retrofit2.Call;
@@ -56,10 +58,17 @@ public class DashboardActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     UserResponse userResponse = response.body();
 
-                    binding.tvUserName.setText("Xin chào, " + userResponse.getName() + "!");
-                    binding.tvTokenBalance.setText(String.valueOf(userResponse.getTokenBalance()));
+                    preferenceManager.saveUserInfo(userResponse.getId(), userResponse.getName(), userResponse.getUsername(),
+                            userResponse.getEmail(), userResponse.getAvatarUrl(), userResponse.getTokenBalance(),
+                            userResponse.getScore());
+
+                    binding.tvUserName.setText("Xin chào, " + preferenceManager.getUserName() + "!");
+                    binding.tvTokenBalance.setText(String.valueOf(preferenceManager.getTokenBalance()));
                 } else {
-                    showError("Lỗi khi lấy thông tin người dùng");
+//                    showError("Lỗi khi lấy thông tin người dùng");
+                    preferenceManager.clearAll();
+                    startActivity(new Intent(DashboardActivity.this, LoginActivity.class));
+                    finish();
                 }
             }
 
@@ -73,6 +82,16 @@ public class DashboardActivity extends AppCompatActivity {
 //        mở menu
         binding.btnSettings.setOnClickListener(v -> {
             showSettingMenu();
+        });
+
+        // Store
+        binding.cardStore.setOnClickListener(v -> {
+            startActivity(new Intent(this, StoreActivity.class));
+        });
+
+//        Profile
+        binding.cardProfile.setOnClickListener(v -> {
+            startActivity(new Intent(this, ProfileActivity.class));
         });
     }
 
