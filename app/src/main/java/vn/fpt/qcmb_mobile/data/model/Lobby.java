@@ -4,6 +4,8 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.UUID;
 
+import vn.fpt.qcmb_mobile.data.response.TopicResponse;
+
 public class Lobby {
 
     @SerializedName("id")
@@ -48,24 +50,105 @@ public class Lobby {
     @SerializedName("updated_at")
     private String updatedAt;
 
+    @SerializedName("topic")
+    private TopicResponse topic;
+
+    @SerializedName("host_user")
+    private User hostUser;
+
+    @SerializedName("player_count")
+    private Integer playerCount;
     // Getters and Setters
-    public UUID getId() { return id; }
-    public void setId(UUID id) { this.id = id; }
+    public UUID getId() {
+        return id;
+    }
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    public Integer getPlayerCount() {
+        return playerCount;
+    }
 
-    public String getCode() { return code; }
-    public void setCode(String code) { this.code = code; }
+    public void setPlayerCount(Integer playerCount) {
+        this.playerCount = playerCount;
+    }
 
-    public Long getHostUserId() { return hostUserId; }
-    public void setHostUserId(Long hostUserId) { this.hostUserId = hostUserId; }
+    public User getHostUser() {
+        return hostUser;
+    }
 
-    public UUID getTopicId() { return topicId; }
-    public void setTopicId(UUID topicId) { this.topicId = topicId; }
+    public void setHostUser(User hostUser) {
+        this.hostUser = hostUser;
+    }
 
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
+    public TopicResponse getTopic() {
+        return topic;
+    }
 
-    public int getMaxItemsPerPlayer() { return maxItemsPerPlayer; }
+    public void setTopic(TopicResponse topic) {
+        this.topic = topic;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public Long getHostUserId() {
+        return hostUserId;
+    }
+
+    public void setHostUserId(Long hostUserId) {
+        this.hostUserId = hostUserId;
+    }
+
+    public UUID getTopicId() {
+        return topicId;
+    }
+
+    public void setTopicId(UUID topicId) {
+        this.topicId = topicId;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public int getMaxItemsPerPlayer() {
+        return maxItemsPerPlayer;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public int getPlayerCountLimit() {
+        return playerCountLimit;
+    }
+
+    public void setPlayerCountLimit(int playerCountLimit) {
+        this.playerCountLimit = playerCountLimit;
+    }
+}
 

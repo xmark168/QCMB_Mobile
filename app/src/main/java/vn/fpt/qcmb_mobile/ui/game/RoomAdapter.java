@@ -2,6 +2,7 @@ package vn.fpt.qcmb_mobile.ui.game;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,22 +15,26 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 import vn.fpt.qcmb_mobile.R;
+import vn.fpt.qcmb_mobile.data.model.Lobby;
 
 public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder> {
     private Context context;
-    private List<Room> rooms;
+    private List<Lobby> rooms;
     private OnRoomJoinListener onRoomJoinListener;
 
     public interface OnRoomJoinListener {
-        void onJoinRoom(Room room);
+        void onJoinRoom(Lobby room);
     }
 
-    public RoomAdapter(Context context, List<Room> rooms, OnRoomJoinListener listener) {
+    public RoomAdapter(Context context, List<Lobby> rooms, OnRoomJoinListener listener) {
         this.context = context;
         this.rooms = rooms;
         this.onRoomJoinListener = listener;
@@ -44,7 +49,7 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull RoomViewHolder holder, int position) {
-        Room room = rooms.get(position);
+        Lobby room = rooms.get(position);
         holder.bind(room);
     }
 
@@ -77,17 +82,21 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
         }
 
         @SuppressLint("SetTextI18n")
-        public void bind(Room room) {
-            tvRoomName.setText(room.name);
-            tvRoomCode.setText("Mã: " + room.code);
-            tvTopic.setText(room.topic);
-            tvOwner.setText("Chủ phòng: " + room.ownerName);
-            tvPlayers.setText("👥 " + room.getPlayersText());
+        public void bind(Lobby room) {
+            tvRoomName.setText(room.getName());
+            tvRoomCode.setText("Mã: " + room.getCode());
+            tvTopic.setText(room.getTopic().getName());
+            tvOwner.setText("Chủ phòng: " + room.getHostUser().getName());
+            tvPlayers.setText("👥 " + room.getPlayerCount()+"/"+room.getPlayerCountLimit());
 
-            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
-            tvCreatedTime.setText("🕐 " + sdf.format(new Date(room.createdAt)));
+            String safe = room.getCreatedAt().length() > 23 ? room.getCreatedAt().substring(0, 23) : room.getCreatedAt();
+            LocalDateTime ldt = LocalDateTime.parse(safe, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"));
 
-            if (room.isFull()) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+            String formatted = ldt.format(formatter);
+            tvCreatedTime.setText("🕐 " +formatted);
+
+            if (room.getPlayerCount() == room.getPlayerCountLimit()) {
                 btnJoin.setText("Đã đầy");
                 btnJoin.setEnabled(false);
                 btnJoin.setBackgroundTintList(context.getColorStateList(R.color.text_secondary));
@@ -103,7 +112,7 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
             }
 
             cardRoom.setOnClickListener(v -> {
-                if (!room.isFull() && onRoomJoinListener != null) {
+                if (!(room.getPlayerCount() == room.getPlayerCountLimit()) && onRoomJoinListener != null) {
                     onRoomJoinListener.onJoinRoom(room);
                 }
             });

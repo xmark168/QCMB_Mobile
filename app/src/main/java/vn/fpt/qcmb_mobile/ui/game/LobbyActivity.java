@@ -23,6 +23,7 @@ import com.google.android.material.card.MaterialCardView;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -30,7 +31,13 @@ import retrofit2.Response;
 import vn.fpt.qcmb_mobile.R;
 import vn.fpt.qcmb_mobile.data.api.ApiClient;
 import vn.fpt.qcmb_mobile.data.api.AuthApiService;
+import vn.fpt.qcmb_mobile.data.api.LobbyApiService;
 import vn.fpt.qcmb_mobile.data.api.TopicApiService;
+import vn.fpt.qcmb_mobile.data.model.Lobby;
+import vn.fpt.qcmb_mobile.data.model.MatchPlayer;
+import vn.fpt.qcmb_mobile.data.model.Topic;
+import vn.fpt.qcmb_mobile.data.request.JoinRequest;
+import vn.fpt.qcmb_mobile.data.request.LobbyCreate;
 import vn.fpt.qcmb_mobile.data.response.TopicResponse;
 import vn.fpt.qcmb_mobile.data.response.UserResponse;
 import vn.fpt.qcmb_mobile.ui.dashboard.DashboardActivity;
@@ -65,11 +72,12 @@ public class LobbyActivity extends AppCompatActivity {
 
     private PreferenceManager preferenceManager;
     private RoomAdapter roomAdapter;
-    private List<Room> availableRooms;
+    private List<Lobby> availableRooms;
     private boolean isCreateTabActive = true;
     private List<TopicResponse> topics;
 
     private TopicApiService topicApiService;
+    private LobbyApiService lobbyApiService;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -167,7 +175,7 @@ public class LobbyActivity extends AppCompatActivity {
     private void initApiServices()
     {
         topicApiService = ApiClient.getClient(preferenceManager,this).create(TopicApiService.class);
-
+        lobbyApiService = ApiClient.getClient(preferenceManager,this).create(LobbyApiService.class);
     }
     private void setupTopics()
     {
@@ -216,14 +224,34 @@ public class LobbyActivity extends AppCompatActivity {
     }
     private void createRoom() {
         String roomName = etRoomName.getText().toString().trim();
-        String topic = spinnerTopic.getSelectedItem().toString();
-        int maxPlayers = currentPlayerCount; // Use the counter value
+        TopicResponse topic = (TopicResponse) spinnerTopic.getSelectedItem();
 
         if (roomName.isEmpty()) {
-            Toast.makeText(this, "❌ Vui lòng nhập tên phòng", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Vui lòng nhập tên phòng", Toast.LENGTH_SHORT).show();
             return;
         }
+        LobbyCreate createRequest = new LobbyCreate();
+        createRequest.setName(roomName);
+        createRequest.setTopic_id(topic.getId());
+        createRequest.setMax_items_per_player(currentMaxItems);
+        createRequest.setInitial_hand_size(currentHandSize);
+        createRequest.setMatch_time_sec(currentMatchTime);
+        createRequest.setPlayer_count_limit(currentPlayerCount);
+        Call<Lobby> call = lobbyApiService.createLobby(createRequest);
 
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(@NonNull Call<Lobby> call, @NonNull Response<Lobby> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    showError("Tạo thành công phòng mã: "+response.body().getCode());
+                } else {
+                    showError("Không thể tạo phòng lúc này. Vui lòng thử lại sau!");
+                }
+            }
+            public void onFailure(@NonNull Call<Lobby> call, @NonNull Throwable t) {
+                showError("Không thể tạo phòng lúc này. Vui lòng thử lại sau!");
+            }
+        });
 
 
 //        // Navigate to game room
@@ -240,11 +268,27 @@ public class LobbyActivity extends AppCompatActivity {
 //        startActivity(intent);
 //        finish();
     }
-    private void joinRoom(Room room) {
+    private void joinRoom(Lobby room) {
         Toast.makeText(this,
-                "🎮 Đang tham gia phòng \"" + room.name + "\"...",
+                "🎮 Đang tham gia phòng \"" + room.getName() + "\"...",
                 Toast.LENGTH_SHORT).show();
+        JoinRequest request = new JoinRequest();
+        request.setMatch_id(room.getId());
+        Call<MatchPlayer> call = lobbyApiService.join(request);
 
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(@NonNull Call<MatchPlayer> call, @NonNull Response<MatchPlayer> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    showError("Tham gia thảnh công: "+room.getName());
+                } else {
+                    showError(response.errorBody().toString());
+                }
+            }
+            public void onFailure(@NonNull Call<MatchPlayer> call, @NonNull Throwable t) {
+                showError("Không thể tham gia phòng lúc này. Vui lòng thử lại sau!");
+            }
+        });
         // Navigate to game room
 //        Intent intent = new Intent(this, GameActivity.class);
 //        intent.putExtra("room_code", room.code);
@@ -254,7 +298,7 @@ public class LobbyActivity extends AppCompatActivity {
 //        intent.putExtra("is_owner", false);
 //        intent.putExtra("match_time", currentMatchTime);
 //        startActivity(intent);
-        finish();
+       // finish();
     }
 
     private void joinRoomByCode() {
@@ -312,37 +356,34 @@ public class LobbyActivity extends AppCompatActivity {
         loadAvailableRooms();
     }
     private void loadAvailableRooms() {
-        // Mock room data
-        availableRooms.clear();
+         availableRooms.clear();
 
-        // Add some sample rooms
-        if (Math.random() > 0.3) { // 70% chance to show rooms
-            availableRooms.add(new Room("ABC123", "Phòng Khoa Học", "🔬 Khoa học", 2, 4, "Nguyễn An"));
-            availableRooms.add(new Room("XYZ789", "Quiz Văn Học", "📚 Văn học", 1, 2, "Trần Bình"));
-            availableRooms.add(new Room("QWE456", "Thể Thao Việt Nam", "⚽ Thể thao", 3, 6, "Lê Cường"));
-        }
+        Call<List<Lobby>> call = lobbyApiService.getAllLobbies(0,10);
 
-        // Update UI
-        if (availableRooms.isEmpty()) {
-            rvAvailableRooms.setVisibility(View.GONE);
-            cardEmptyRooms.setVisibility(View.VISIBLE);
-        } else {
-            rvAvailableRooms.setVisibility(View.VISIBLE);
-            cardEmptyRooms.setVisibility(View.GONE);
-            roomAdapter.notifyDataSetChanged();
-        }
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(@NonNull Call<List<Lobby>> call, @NonNull Response<List<Lobby>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    availableRooms.addAll(response.body());
+                    if (availableRooms.isEmpty()) {
+                        rvAvailableRooms.setVisibility(View.GONE);
+                        cardEmptyRooms.setVisibility(View.VISIBLE);
+                    } else {
+                        rvAvailableRooms.setVisibility(View.VISIBLE);
+                        cardEmptyRooms.setVisibility(View.GONE);
+                        roomAdapter.notifyDataSetChanged();
+                    }
+                } else {
+                    showError("Không thể tạo phòng lúc này. Vui lòng thử lại sau!");
+                }
+            }
+            public void onFailure(@NonNull Call<List<Lobby>> call, @NonNull Throwable t) {
+                showError("Không thể tạo phòng lúc này. Vui lòng thử lại sau!");
+            }
+        });
+
     }
-    private String generateRoomCode() {
-        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        StringBuilder code = new StringBuilder();
-        Random random = new Random();
 
-        for (int i = 0; i < 6; i++) {
-            code.append(chars.charAt(random.nextInt(chars.length())));
-        }
-
-        return code.toString();
-    }
 
     private void decreasePlayerCount() {
         if (currentPlayerCount > 2) {

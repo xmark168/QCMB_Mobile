@@ -48,7 +48,7 @@
                     android:layout_height="wrap_content"
                     android:text="Mã: ABC123"
                     android:textSize="12sp"
-                    android:textColor="@color/text_secondary"
+                    android:textColor="#FFFFFF"
                     android:background="@drawable/bg_token_balance"
                     android:padding="4dp" />
 
@@ -109,7 +109,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Chủ phòng: Nguyễn An"
+                android:text="Chủ phòng: None"
                 android:textSize="12sp"
                 android:textColor="@color/text_secondary" />
 
@@ -117,7 +117,7 @@
                 android:id="@+id/tvCreatedTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="🕐 14:30"
+                android:text="🕐 00"
                 android:textSize="12sp"
                 android:textColor="@color/text_secondary" />
 
