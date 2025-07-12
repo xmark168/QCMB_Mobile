@@ -81,7 +81,7 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
             }
 
             if (entry.getUser() != null) {
-                tvName.setText(entry.getUser().getUsername());
+                tvName.setText(entry.getUser().getName());
             }
 
             tvScore.setText(String.format("%,d điểm", entry.getTotalScore()));
