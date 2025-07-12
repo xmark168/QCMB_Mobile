@@ -93,6 +93,11 @@ public class DashboardActivity extends AppCompatActivity {
         binding.cardProfile.setOnClickListener(v -> {
             startActivity(new Intent(this, ProfileActivity.class));
         });
+
+        // Leaderboard
+        binding.cardLeaderboard.setOnClickListener(v -> {
+            startActivity(new Intent(this, LeaderboardActivity.class));
+        });
     }
 
 
