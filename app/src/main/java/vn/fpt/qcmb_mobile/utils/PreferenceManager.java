@@ -24,10 +24,10 @@ public class PreferenceManager {
     private static final String KEY_AVATAR_URL = "avatar_url";
     private static final String KEY_INVENTORY_QUANTITY = "inventory_quantity";
 
-
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
     private Gson gson;
+
     public PreferenceManager(Context context) {
         sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
@@ -61,9 +61,11 @@ public class PreferenceManager {
         editor.putInt(KEY_USER_SCORE, score);
         editor.apply();
     }
+
     public boolean isLoggedIn() {
         return sharedPreferences.getBoolean(KEY_IS_LOGGED_IN, false);
     }
+
     public String getAccessToken() {
         return sharedPreferences.getString(KEY_ACCESS_TOKEN, null);
     }
@@ -122,10 +124,8 @@ public class PreferenceManager {
         editor.apply();
     }
 
-    // Clear all data (logout)
-    public void clearAll() {
-        editor.clear();
-        editor.apply();
+    public String getString(String key, String defaultValue) {
+        return sharedPreferences.getString(key, defaultValue);
     }
 
     // Avatar methods
@@ -136,5 +136,11 @@ public class PreferenceManager {
 
     public String getAvatarUrl() {
         return sharedPreferences.getString(KEY_AVATAR_URL, null);
+    }
+
+    // Clear all data (logout)
+    public void clearAll() {
+        editor.clear();
+        editor.apply();
     }
 }
