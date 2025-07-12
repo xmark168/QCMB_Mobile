@@ -15,9 +15,6 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
@@ -75,12 +72,12 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     }
 
     private void bindingView() {
-        etEmail = findViewById(R.id.etEmail);
+        etEmail = findViewById(R.id.etUserEmail);
         etCode = findViewById(R.id.etCode);
         etNewPassword = findViewById(R.id.etNewPassword);
         etConfirmPassword = findViewById(R.id.etConfirmPassword);
 
-        tilEmail = findViewById(R.id.tilEmail);
+        tilEmail = findViewById(R.id.tilUserEmail);
         tilCode = findViewById(R.id.tilCode);
         tilNewPassword = findViewById(R.id.tilNewPassword);
         tilConfirmPassword = findViewById(R.id.tilConfirmPassword);

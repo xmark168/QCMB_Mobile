@@ -128,6 +128,10 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent;
 
         if ("ADMIN".equalsIgnoreCase(role)) {
+            // Lưu trạng thái admin
+            preferenceManager.saveString("admin_logged_in", "true");
+            preferenceManager.saveString("admin_username", binding.etUsername.getText().toString());
+
             intent = new Intent(LoginActivity.this, AdminDashboardActivity.class);
             Toast.makeText(this, "✅ Đăng nhập admin thành công!", Toast.LENGTH_SHORT).show();
         } else {

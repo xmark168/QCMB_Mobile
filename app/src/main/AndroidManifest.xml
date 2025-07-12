@@ -16,6 +16,24 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".ui.dashboard.LeaderboardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.profile.ChangePasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.profile.EditProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.store.StoreActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.store.PaymentWebViewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.profile.ProfileActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.auth.ForgotPasswordActivity"
             android:exported="false" />
         <activity
@@ -30,6 +48,8 @@
         <activity
             android:name=".ui.auth.LoginActivity"
             android:exported="false" />
+        <activity android:name=".ui.admin.QuestionManagementActivity" />
+        <activity android:name=".ui.admin.TopicManagementActivity" />
         <activity
             android:name=".ui.game.LobbyActivity"
             android:exported="false" />

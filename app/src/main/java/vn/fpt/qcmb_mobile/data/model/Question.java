@@ -3,13 +3,18 @@ package vn.fpt.qcmb_mobile.data.model;
 import com.google.gson.annotations.SerializedName;
 import java.util.UUID;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
+
 public class Question {
 
     @SerializedName("id")
-    private UUID id;
+    private String id;
 
     @SerializedName("topic_id")
-    private UUID topicId;
+    private String topicId;
 
     @SerializedName("content")
     private String content;
@@ -32,39 +37,80 @@ public class Question {
     @SerializedName("created_at")
     private String createdAt;
 
-    // Constructors
-    public Question() {}
+    // Dữ liệu bổ sung cho hiển thị UI/admin
+    private String category = "Tổng hợp";
+    private int points = 10;
 
-    public Question(UUID id, UUID topicId, String content, int difficulty,
-                    String correctAnswer, String wrongAnswer1, String wrongAnswer2,
-                    String wrongAnswer3, String createdAt) {
+    // Danh sách trộn đáp án
+    private List<String> shuffledOptions;
+    private int correctAnswerIndex;
+
+    public Question() {
+        // Mặc định
+    }
+
+    // Constructor đầy đủ (dùng khi khởi tạo từ admin)
+    public Question(String id, String content, List<String> options, int correctAnswerIndex,
+                    String category, int difficulty, int points) {
         this.id = id;
         this.topicId = topicId;
         this.content = content;
+        this.category = category;
         this.difficulty = difficulty;
-        this.correctAnswer = correctAnswer;
-        this.wrongAnswer1 = wrongAnswer1;
-        this.wrongAnswer2 = wrongAnswer2;
-        this.wrongAnswer3 = wrongAnswer3;
-        this.createdAt = createdAt;
+        this.points = points;
+
+        if (options != null && options.size() >= 4) {
+            this.correctAnswer = options.get(correctAnswerIndex);
+
+            List<String> wrongs = new ArrayList<>();
+            for (int i = 0; i < options.size(); i++) {
+                if (i != correctAnswerIndex) {
+                    wrongs.add(options.get(i));
+                }
+            }
+
+            this.wrongAnswer1 = wrongs.get(0);
+            this.wrongAnswer2 = wrongs.get(1);
+            this.wrongAnswer3 = wrongs.get(2);
+        }
+
+        shuffleOptions(); // tạo danh sách options trộn
     }
 
-    // Getters and Setters
-    public UUID getId() {
+    // Trộn đáp án
+    private void shuffleOptions() {
+        shuffledOptions = new ArrayList<>();
+        shuffledOptions.add(correctAnswer);
+        shuffledOptions.add(wrongAnswer1);
+        shuffledOptions.add(wrongAnswer2);
+        shuffledOptions.add(wrongAnswer3);
+        Collections.shuffle(shuffledOptions);
+
+        // Lưu lại vị trí đúng
+        correctAnswerIndex = shuffledOptions.indexOf(correctAnswer);
+    }
+
+    // Getter / Setter
+
+    public String getId() {
         return id;
     }
 
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public UUID getTopicId() {
+    public String getTopicId() {
         return topicId;
     }
 
-    public void setTopicId(UUID topicId) {
+    public void setTopicId(String topicId) {
         this.topicId = topicId;
     }
+    public String getTopic_id() {
+        return topicId;
+    }
+
+    public void setTopic_id(String topic_id) {
+        this.topicId = topic_id;
+    }
+
 
     public String getContent() {
         return content;
@@ -120,5 +166,59 @@ public class Question {
 
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
+    }
+
+    public List<String> getOptions() {
+        if (shuffledOptions == null) {
+            shuffleOptions();
+        }
+        return shuffledOptions;
+    }
+
+    public int getCorrectAnswerIndex() {
+        return correctAnswerIndex;
+    }
+
+    // Cập nhật danh sách đáp án (nếu cần)
+    public void setOptions(List<String> options, int correctAnswerIndex) {
+        if (options != null && options.size() >= 4) {
+            this.correctAnswer = options.get(correctAnswerIndex);
+
+            List<String> wrongs = new ArrayList<>();
+            for (int i = 0; i < options.size(); i++) {
+                if (i != correctAnswerIndex) {
+                    wrongs.add(options.get(i));
+                }
+            }
+
+            this.wrongAnswer1 = wrongs.get(0);
+            this.wrongAnswer2 = wrongs.get(1);
+            this.wrongAnswer3 = wrongs.get(2);
+        }
+
+        shuffleOptions(); // shuffle lại nếu cập nhật
+    }
+    public String getQuestion() {
+        return content;
+    }
+
+    public void setQuestion(String question) {
+        this.content = question;
     }
 }
