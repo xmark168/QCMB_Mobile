@@ -20,7 +20,7 @@ public interface StoreApiService {
     Call<PurchaseResponse> purchaseItem(@Header("Authorization") String token, @Body PurchaseRequest request);
 
     @GET("store/inventory")
-    Call<List<Inventory>> getUserInventory(@Header("Authorization") String token);
+    Call<List<Inventory>> getUserInventory();
 
     @POST("store/topup")
     Call<TopupResponse> createTopup(@Header("Authorization") String token, @Body Map<String, Integer> body);

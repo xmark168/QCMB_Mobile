@@ -282,6 +282,11 @@ public class LobbyActivity extends AppCompatActivity {
             public void onResponse(@NonNull Call<MatchPlayer> call, @NonNull Response<MatchPlayer> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     showError("Tham gia thảnh công: "+room.getName());
+                    //Navigate to Game activity
+                    Intent intent = new Intent(LobbyActivity.this, GameActivity.class);
+                    intent.putExtra("room_id", response.body().getId().toString());
+                    startActivity(intent);
+                    finish();
                 } else {
                     Gson gson = new Gson();
                     ErrorResponse error = gson.fromJson(
@@ -296,16 +301,7 @@ public class LobbyActivity extends AppCompatActivity {
                 showError("Không thể tham gia phòng lúc này. Vui lòng thử lại sau!");
             }
         });
-        // Navigate to game room
-//        Intent intent = new Intent(this, GameActivity.class);
-//        intent.putExtra("room_code", room.code);
-//        intent.putExtra("room_name", room.name);
-//        intent.putExtra("topic", room.topic);
-//        intent.putExtra("max_players", room.maxPlayers);
-//        intent.putExtra("is_owner", false);
-//        intent.putExtra("match_time", currentMatchTime);
-//        startActivity(intent);
-       // finish();
+
     }
 
     private void joinRoomByCode() {
@@ -329,6 +325,11 @@ public class LobbyActivity extends AppCompatActivity {
             public void onResponse(@NonNull Call<MatchPlayer> call, @NonNull Response<MatchPlayer> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     showError("Tham gia thảnh công: "+roomCode);
+                    //Navigate to Game activity
+                    Intent intent = new Intent(LobbyActivity.this, GameActivity.class);
+                    intent.putExtra("room_id", response.body().getId().toString());
+                    startActivity(intent);
+                    finish();
                 } else {
                     Gson gson = new Gson();
                     ErrorResponse error = gson.fromJson(
@@ -344,21 +345,7 @@ public class LobbyActivity extends AppCompatActivity {
                 showError("Không thể tham gia phòng lúc này. Vui lòng thử lại sau!");
             }
         });
-//            // Navigate directly to game
-//            Intent intent = new Intent(this, GameActivity.class);
-//            intent.putExtra("room_code", roomCode);
-//            intent.putExtra("room_name", "Phòng " + roomCode);
-//            intent.putExtra("topic", "🧠 Tổng hợp");
-//            intent.putExtra("max_players", 4);
-//            intent.putExtra("is_owner", false);
-//            intent.putExtra("match_time", currentMatchTime);
-//            startActivity(intent);
-//            finish();
-//        } else {
-//            Toast.makeText(this,
-//                    "❌ Không tìm thấy phòng với mã " + roomCode,
-//                    Toast.LENGTH_SHORT).show();
-//        }
+
     }
     private void switchToJoinTab() {
         if (!isCreateTabActive) return;
@@ -518,7 +505,7 @@ public class LobbyActivity extends AppCompatActivity {
         updateButtonColor(btnDecreaseMaxItems, currentMaxItems > 1);
         updateButtonColor(btnIncreaseMaxItems, canIncreaseItems);
 
-       btnDecreaseMatchTime.setEnabled(currentMatchTime > 1);
+        btnDecreaseMatchTime.setEnabled(currentMatchTime > 1);
         btnIncreaseMatchTime.setEnabled(currentMatchTime < 30);
         updateButtonColor(btnDecreaseMatchTime, currentMatchTime > 1);
         updateButtonColor(btnIncreaseMatchTime, currentMatchTime < 30);

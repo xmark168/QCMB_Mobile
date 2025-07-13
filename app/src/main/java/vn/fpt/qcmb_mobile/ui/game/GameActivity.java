@@ -3,6 +3,7 @@ package vn.fpt.qcmb_mobile.ui.game;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.google.gson.Gson;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import retrofit2.Call;
@@ -19,25 +21,40 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import vn.fpt.qcmb_mobile.R;
 import vn.fpt.qcmb_mobile.data.api.ApiClient;
+import vn.fpt.qcmb_mobile.data.api.AuthApiService;
 import vn.fpt.qcmb_mobile.data.api.LobbyApiService;
+import vn.fpt.qcmb_mobile.data.api.LobbyWebSocket;
+import vn.fpt.qcmb_mobile.data.api.OnEventListener;
+import vn.fpt.qcmb_mobile.data.api.StoreApiService;
 import vn.fpt.qcmb_mobile.data.model.ErrorResponse;
+import vn.fpt.qcmb_mobile.data.model.Inventory;
 import vn.fpt.qcmb_mobile.data.model.Lobby;
 import vn.fpt.qcmb_mobile.data.model.MatchPlayer;
 import vn.fpt.qcmb_mobile.data.model.Topic;
+import vn.fpt.qcmb_mobile.data.response.UserResponse;
 import vn.fpt.qcmb_mobile.databinding.ActivityGameBinding;
+import vn.fpt.qcmb_mobile.ui.auth.LoginActivity;
+import vn.fpt.qcmb_mobile.ui.dashboard.DashboardActivity;
+import vn.fpt.qcmb_mobile.ui.profile.ProfileActivity;
 import vn.fpt.qcmb_mobile.utils.PreferenceManager;
 
-public class GameActivity extends AppCompatActivity implements PlayerAdapter.OnPlayerActionListener {
+public class GameActivity extends AppCompatActivity implements PlayerAdapter.OnPlayerActionListener , InventoryItemAdapter.OnInventoryItemSelectionListener{
     private ActivityGameBinding binding;
     private PreferenceManager preferenceManager;
 
     private LobbyApiService lobbyApiService;
+    private StoreApiService storeApiService;
+    private AuthApiService authApiService;
     private String currentRoomId;
 
     private String currentTopic;
     private Lobby currentLobby;
 
+    private InventoryItemAdapter itemAdapter;
     private PlayerAdapter playerAdapter;
+    private List<Inventory> playerInventories;
+    private LobbyWebSocket lobbyWebSocket;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,14 +62,49 @@ public class GameActivity extends AppCompatActivity implements PlayerAdapter.OnP
 
         binding = ActivityGameBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        binding.sectionItemSelection.setVisibility(View.VISIBLE);
 
         initServices();
         bindingActions();
     }
+    private void InitSocket()
+    {
+        lobbyWebSocket = new LobbyWebSocket(currentLobby.getId(),preferenceManager.getUserName2() , new OnEventListener() {
+            @Override
+            public void onEvent(String type, Map<String, Object> data) {
+                runOnUiThread(() -> {
+                    Log.d("WEBSOCKET",type);
 
+                    switch (type) {
+                        case "system":
+                            Toast.makeText(GameActivity.this,
+                                    "WebSocket connected", Toast.LENGTH_SHORT).show();
+                            break;
+                        case "message":
+                            // Ví dụ: hiển thị tin nhắn chat
+                            String event = (String) data.get("event");
+                            Log.d("WEBSOCKET",event);
+
+                            Object payload = data.get("payload");
+                            if ("join".equals(event) || "leave".equals(event)) {
+                                GetPlayersList();
+                            }
+                            break;
+                        case "error":
+                            Log.d("Websocket",
+                                    "Đã có lỗi xảy ra: " + data.get("error"));
+                            break;
+                    }
+                });
+            }
+        });
+        lobbyWebSocket.connect(preferenceManager.getAccessToken());
+    }
     private void initServices() {
         preferenceManager = new PreferenceManager(this);
         lobbyApiService = ApiClient.getClient(preferenceManager, this).create(LobbyApiService.class);
+        storeApiService =  ApiClient.getClient(preferenceManager, this).create(StoreApiService.class);
+        authApiService = ApiClient.getClient(preferenceManager,this).create(AuthApiService.class);
 
         // Initial data
         Intent intent = getIntent();
@@ -60,6 +112,7 @@ public class GameActivity extends AppCompatActivity implements PlayerAdapter.OnP
 
         if(currentRoomId == null)
             finish();
+
         //Get lobby information
         GetSpecificLobby();
 
@@ -83,6 +136,13 @@ public class GameActivity extends AppCompatActivity implements PlayerAdapter.OnP
                             .setText(currentLobby.getPlayerCount()+"/"+currentLobby. getPlayerCountLimit());
                     //Get lobby members
                     GetPlayersList();
+
+                    // Load and setup inventory items
+                    loadPlayerInventory();
+
+                    //Init socket
+                    InitSocket();
+
                 } else {
                     Gson gson = new Gson();
                     ErrorResponse error = gson.fromJson(
@@ -117,11 +177,7 @@ public class GameActivity extends AppCompatActivity implements PlayerAdapter.OnP
                     binding.rvPlayers.setLayoutManager(new LinearLayoutManager(GameActivity.this));
                     binding.rvPlayers.setAdapter(playerAdapter);
 
-                    // Load and setup inventory items
-                    //loadPlayerInventory();
-                    //itemAdapter = new InventoryItemAdapter(this, inventoryItems, this, maxItemsPerPlayer);
-                    //rvItems.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-                    //rvItems.setAdapter(itemAdapter);
+
                 } else {
                     Gson gson = new Gson();
                     ErrorResponse error = gson.fromJson(
@@ -137,17 +193,90 @@ public class GameActivity extends AppCompatActivity implements PlayerAdapter.OnP
             }
         });
     }
+    private void loadPlayerInventory()
+    {
+        storeApiService.getUserInventory().enqueue(new Callback<List<Inventory>>() {
+            @Override
+            public void onResponse(Call<List<Inventory>> call, Response<List<Inventory>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    playerInventories = response.body();
+                    itemAdapter = new InventoryItemAdapter(GameActivity.this, playerInventories, GameActivity.this, currentLobby.getMaxItemsPerPlayer());
+                    binding.rvItems.setLayoutManager(new LinearLayoutManager(GameActivity.this, LinearLayoutManager.HORIZONTAL, false));
+                    binding.rvItems.setAdapter(itemAdapter);
+                } else {
+                    showMessage("Đã có lỗi khi lấy item của người chơi");
+                }
+            }
 
+            @Override
+            public void onFailure(Call<List<Inventory>> call, Throwable t) {
+                showMessage("Đã có lỗi ở máy chủ vui lòng tải lại!");
+            }
+        });
+    }
     private void showMessage(String message)
     {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
-    private void bindingActions() {
 
+    private void updateSelectedItemsCount() {
+        if (itemAdapter != null) {
+            int selectedCount = itemAdapter.getTotalSelectedItems();
+            binding.tvSelectedItemsCount.setText(selectedCount + "/" +  currentLobby.getMaxItemsPerPlayer());
+        } else {
+            binding.tvSelectedItemsCount.setText("0/" + currentLobby.getMaxItemsPerPlayer());
+        }
+    }
+
+    @Override
+    public void onItemSelectionChanged(Inventory item, int selectedQuantity) {
+        updateSelectedItemsCount();
+        updateInventoryStatus();
+    }
+
+    @Override
+    public void onSelectionLimitReached() {
+        Toast.makeText(this, "❌ Chỉ được chọn tối đa " + currentLobby.getMaxItemsPerPlayer() + " items!", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onRemovePlayer(MatchPlayer player) {
 
+    }
+    private void updateInventoryStatus() {
+        if (playerInventories.isEmpty()) {
+            binding.tvInventoryStatus.setText("❌ Bạn không có items nào trong kho");
+            binding.tvInventoryStatus.setVisibility(View.VISIBLE);
+            binding.rvItems.setVisibility(View.GONE);
+        } else {
+            binding.tvInventoryStatus.setVisibility(View.GONE);
+            binding.rvItems.setVisibility(View.VISIBLE);
+        }
+    }
+
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+        super.onPointerCaptureChanged(hasCapture);
+    }
+
+    private void bindingActions() {
+        binding.btnLeaveRoom.setOnClickListener(v -> leaveRoom());
+
+    }
+
+    private void leaveRoom() {
+
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+        builder.setTitle("Rời phòng");
+        builder.setMessage("Bạn có chắc muốn rời khỏi phòng này?");
+        builder.setPositiveButton("Rời phòng", (dialog, which) -> {
+            lobbyWebSocket.close();
+            Intent intent = new Intent(this, DashboardActivity.class);
+            startActivity(intent);
+            finish();
+        });
+        builder.setNegativeButton("Ở lại", null);
+        builder.show();
     }
 }

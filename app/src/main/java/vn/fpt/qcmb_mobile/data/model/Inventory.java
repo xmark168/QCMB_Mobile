@@ -17,6 +17,8 @@ public class Inventory {
     private User user;
     @SerializedName("card")
     private Card card;
+
+    private int selectedQuantity;
     public Inventory() {}
 
     public Inventory(int userId, String cardId, int quantity) {
@@ -26,6 +28,16 @@ public class Inventory {
     }
 
     // Getters and Setters
+
+
+    public int getSelectedQuantity() {
+        return selectedQuantity;
+    }
+
+    public void setSelectedQuantity(int selectedQuantity) {
+        this.selectedQuantity = selectedQuantity;
+    }
+
     public String getId() {
         return id;
     }

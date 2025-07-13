@@ -90,7 +90,9 @@ public class PreferenceManager {
     public String getUserName() {
         return sharedPreferences.getString(KEY_USER_NAME, "");
     }
-
+    public String getUserName2() {
+        return sharedPreferences.getString(KEY_USER_USERNAME, "");
+    }
     public String getUserEmail() {
         return sharedPreferences.getString(KEY_USER_EMAIL, "");
     }

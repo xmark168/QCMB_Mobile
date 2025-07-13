@@ -199,9 +199,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void loadInventory() {
-        String token = preferenceManager.getFullToken();
-
-        storeApiService.getUserInventory(token).enqueue(new Callback<List<Inventory>>() {
+        storeApiService.getUserInventory().enqueue(new Callback<List<Inventory>>() {
             @Override
             public void onResponse(Call<List<Inventory>> call, Response<List<Inventory>> response) {
                 if (response.code() == 401) {
