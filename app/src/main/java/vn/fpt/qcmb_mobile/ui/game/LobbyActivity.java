@@ -247,8 +247,19 @@ public class LobbyActivity extends AppCompatActivity {
             public void onResponse(@NonNull Call<Lobby> call, @NonNull Response<Lobby> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     showError("Tạo thành công phòng mã: "+response.body().getCode());
+
+                    //Navigate to Game activity
+                    Intent intent = new Intent(LobbyActivity.this, GameActivity.class);
+                    intent.putExtra("room_id", response.body().getId().toString());
+                    startActivity(intent);
+                    finish();
                 } else {
-                    showError("Không thể tạo phòng lúc này. Vui lòng thử lại sau!");
+                    Gson gson = new Gson();
+                    ErrorResponse error = gson.fromJson(
+                            response.errorBody().charStream(), ErrorResponse.class
+                    );
+                    String message = error.getDetail();
+                    showError(message);
                 }
             }
             public void onFailure(@NonNull Call<Lobby> call, @NonNull Throwable t) {
@@ -257,19 +268,6 @@ public class LobbyActivity extends AppCompatActivity {
         });
 
 
-//        // Navigate to game room
-//        Intent intent = new Intent(this, GameActivity.class);
-//        intent.putExtra("room_code", roomCode);
-//        intent.putExtra("room_name", roomName);
-//        intent.putExtra("topic", topic);
-//        intent.putExtra("max_players", maxPlayers);
-//        intent.putExtra("initial_hand_size", currentHandSize);
-//        intent.putExtra("turn_time", currentTurnTime);
-//        intent.putExtra("match_time", currentMatchTime);
-//        intent.putExtra("max_items_per_player", currentMaxItems);
-//        intent.putExtra("is_owner", true);
-//        startActivity(intent);
-//        finish();
     }
     private void joinRoom(Lobby room) {
         Toast.makeText(this,
@@ -285,7 +283,13 @@ public class LobbyActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     showError("Tham gia thảnh công: "+room.getName());
                 } else {
-                    showError(response.errorBody().toString());
+                    Gson gson = new Gson();
+                    ErrorResponse error = gson.fromJson(
+                            response.errorBody().charStream(), ErrorResponse.class
+                    );
+                    String message = error.getDetail();
+                    showError(message);
+                    loadAvailableRooms();
                 }
             }
             public void onFailure(@NonNull Call<MatchPlayer> call, @NonNull Throwable t) {
@@ -332,6 +336,8 @@ public class LobbyActivity extends AppCompatActivity {
                     );
                     String message = error.getDetail();
                     showError(message);
+                    loadAvailableRooms();
+
                 }
             }
             public void onFailure(@NonNull Call<MatchPlayer> call, @NonNull Throwable t) {

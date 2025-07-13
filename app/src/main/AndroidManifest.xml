@@ -54,6 +54,9 @@
             android:name=".ui.game.LobbyActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.game.GameActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.MainActivity"
             android:exported="true">
             <intent-filter>

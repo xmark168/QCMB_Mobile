@@ -36,6 +36,16 @@ public class MatchPlayer {
     @SerializedName("match")
     private Lobby match;
 
+    private Boolean isOwner = Boolean.FALSE;
+
+    public Boolean getOwner() {
+        return isOwner;
+    }
+
+    public void setOwner(Boolean owner) {
+        isOwner = owner;
+    }
+
     // Getters and setters
 
     public UUID getId() {
