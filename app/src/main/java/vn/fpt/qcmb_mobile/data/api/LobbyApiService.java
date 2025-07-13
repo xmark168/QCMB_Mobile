@@ -36,4 +36,10 @@ public interface LobbyApiService {
 
     @GET("lobby/{lobby_id}")
     Call<Lobby> getCurrentLobby(@Path("lobby_id") UUID lobbyId);
+
+    @POST("lobby/{lobby_id}/ready")
+    Call<MatchPlayer> ready(@Path("lobby_id") UUID LobbyId);
+
+    @POST("lobby/{lobby_id}/unready")
+    Call<MatchPlayer> unready(@Path("lobby_id") UUID LobbyId);
 }

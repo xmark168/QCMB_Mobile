@@ -172,7 +172,7 @@
             android:id="@+id/btnAddBot"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:text="🤖 Thêm Bot (3/4 slots)"
+            android:text=" + Mời người chơi"
             android:textStyle="bold"
             android:textSize="14sp"
             android:textAllCaps="false"
@@ -257,7 +257,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="ℹ️ Chọn items để sử dụng trong game (tùy chọn). Có thể bắt đầu với 0 items."
+                android:text="ℹ️ Chọn items để sử dụng trong game"
                 android:textSize="12sp"
                 android:textColor="@color/text_secondary"
                 android:background="@color/info_background"
@@ -308,7 +308,6 @@
             app:cornerRadius="12dp"
             android:textColor="@color/text_white"
             android:layout_marginStart="8dp"
-            android:enabled="false"
             app:rippleColor="@color/white_overlay" />
 
     </LinearLayout>

@@ -61,7 +61,10 @@ public class PreferenceManager {
         editor.putInt(KEY_USER_SCORE, score);
         editor.apply();
     }
-
+    public int getId()
+    {
+        return sharedPreferences.getInt(KEY_USER_ID, -1);
+    }
     public boolean isLoggedIn() {
         return sharedPreferences.getBoolean(KEY_IS_LOGGED_IN, false);
     }

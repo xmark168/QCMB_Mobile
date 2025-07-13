@@ -37,7 +37,6 @@ public class LobbyWebSocket extends WebSocketListener {
                 .addHeader("Origin", "http://10.0.2.2")
                 .build();
         ws = client.newWebSocket(request, this);
-        client.dispatcher().executorService().shutdown();
     }
     @Override
     public void onOpen(WebSocket webSocket, Response response) {
@@ -54,7 +53,6 @@ public class LobbyWebSocket extends WebSocketListener {
         listener.onEvent("error", error);
     }
 
-    /** Gửi sự kiện lên server dưới dạng JSON */
     public void sendEvent(String event, Object payload) {
         Map<String, Object> msg = new HashMap<>();
         msg.put("event", event);

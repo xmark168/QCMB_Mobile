@@ -1,13 +1,17 @@
 package vn.fpt.qcmb_mobile.ui.game;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.gson.Gson;
@@ -30,12 +34,9 @@ import vn.fpt.qcmb_mobile.data.model.ErrorResponse;
 import vn.fpt.qcmb_mobile.data.model.Inventory;
 import vn.fpt.qcmb_mobile.data.model.Lobby;
 import vn.fpt.qcmb_mobile.data.model.MatchPlayer;
-import vn.fpt.qcmb_mobile.data.model.Topic;
-import vn.fpt.qcmb_mobile.data.response.UserResponse;
+import vn.fpt.qcmb_mobile.data.model.User;
 import vn.fpt.qcmb_mobile.databinding.ActivityGameBinding;
-import vn.fpt.qcmb_mobile.ui.auth.LoginActivity;
 import vn.fpt.qcmb_mobile.ui.dashboard.DashboardActivity;
-import vn.fpt.qcmb_mobile.ui.profile.ProfileActivity;
 import vn.fpt.qcmb_mobile.utils.PreferenceManager;
 
 public class GameActivity extends AppCompatActivity implements PlayerAdapter.OnPlayerActionListener , InventoryItemAdapter.OnInventoryItemSelectionListener{
@@ -81,13 +82,13 @@ public class GameActivity extends AppCompatActivity implements PlayerAdapter.OnP
                                     "WebSocket connected", Toast.LENGTH_SHORT).show();
                             break;
                         case "message":
-                            // Ví dụ: hiển thị tin nhắn chat
                             String event = (String) data.get("event");
-                            Log.d("WEBSOCKET",event);
-
                             Object payload = data.get("payload");
-                            if ("join".equals(event) || "leave".equals(event)) {
+                            if ("join".equals(event) || "leave".equals(event)
+                                    ||"ready".equals(event)) {
                                 GetPlayersList();
+                                Log.d("WEBSOCKET",event);
+
                             }
                             break;
                         case "error":
@@ -122,6 +123,7 @@ public class GameActivity extends AppCompatActivity implements PlayerAdapter.OnP
         Call<Lobby> call2 = lobbyApiService.getCurrentLobby(UUID.fromString(currentRoomId));
 
         call2.enqueue(new Callback<>() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onResponse(@NonNull Call<Lobby> call, @NonNull Response<Lobby> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -167,16 +169,51 @@ public class GameActivity extends AppCompatActivity implements PlayerAdapter.OnP
             public void onResponse(@NonNull Call<List<MatchPlayer>> call, @NonNull Response<List<MatchPlayer>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     List<MatchPlayer> listPlayers = response.body();
+                    binding.tvPlayerCount.setText(listPlayers.size() + "/" + currentLobby.getPlayerCountLimit());
+                    boolean isReady = true;
                     for(MatchPlayer player : listPlayers)
                     {
-                        Log.d("API",player.getUserId().toString());
+                        if("waiting".equals(player.getStatus()) && !isHost())
+                            isReady = false;
+                        if(player.getUserId() == preferenceManager.getId())
+                        {
+                            User current = player.getUser();
+                            current.setName(current.getName()+" (Tôi)");
+                            player.setUser(current);
+                            if(!isHost())
+                                if(player.getStatus().equals("waiting"))
+                                {
+                                    binding.btnStartGame.setText("Sẵn sàng");
+                                     binding.btnStartGame.setBackgroundColor(Color.GREEN);
+                                }
+                                else {
+                                    binding.btnStartGame.setText("Hủy");
+                                    binding.btnStartGame.setBackgroundColor(Color.RED);
+                                }
+
+                        }
                         if(player.getUserId() == currentLobby.getHostUserId())
                             player.setOwner(true);
                     }
+                    if(isHost())
+                    {
+                        if(isReady && listPlayers.size() >= currentLobby.getPlayerCountLimit())
+                        {
+                            binding.btnStartGame.setText("Bắt đầu");
+                            binding.btnStartGame.setBackgroundColor(Color.BLUE);
+                        }
+                        else
+                        {
+                            binding.btnStartGame.setText("\uD83C\uDFAF Chờ đủ người chơi");
+                            int green = ContextCompat.getColor(GameActivity.this, R.color.secondary_green);
+                            binding.btnStartGame.setBackgroundColor(green);
+                        }
+                    }
+
                     playerAdapter = new PlayerAdapter(GameActivity.this, listPlayers, GameActivity.this,false);
                     binding.rvPlayers.setLayoutManager(new LinearLayoutManager(GameActivity.this));
                     binding.rvPlayers.setAdapter(playerAdapter);
-
+                    playerAdapter.notifyDataSetChanged();
 
                 } else {
                     Gson gson = new Gson();
@@ -262,9 +299,31 @@ public class GameActivity extends AppCompatActivity implements PlayerAdapter.OnP
 
     private void bindingActions() {
         binding.btnLeaveRoom.setOnClickListener(v -> leaveRoom());
+        binding.btnStartGame.setOnClickListener(v -> startAction());
 
     }
+    private void startAction()
+    {
+        Log.d("DEBUG",binding.btnStartGame.getText().toString());
+       if(binding.btnStartGame.getText().toString().equals("Sẵn sàng"))
+       {
+           Ready();
+           GetPlayersList();
+       }
+       else if(binding.btnStartGame.getText().toString().equals("Hủy"))
+       {
+           Unready();
+           GetPlayersList();
+       }
+       else if(binding.btnStartGame.getText().toString().equals("Bắt đầu"))
+       {
 
+       }
+       else
+       {
+           //Không làm gì cả
+       }
+    }
     private void leaveRoom() {
 
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
@@ -278,5 +337,69 @@ public class GameActivity extends AppCompatActivity implements PlayerAdapter.OnP
         });
         builder.setNegativeButton("Ở lại", null);
         builder.show();
+    }
+    private boolean isHost()
+    {
+        return currentLobby.getHostUserId() == preferenceManager.getId();
+    }
+    private void Ready() {
+        Call<MatchPlayer> call = lobbyApiService.ready(currentLobby.getId());
+        call.enqueue(new Callback<MatchPlayer>() {
+                         @Override
+                         public void onResponse(Call<MatchPlayer> call, Response<MatchPlayer> response) {
+                             if (response.isSuccessful() && response.body() != null) {
+                                 showMessage("Đã sẵn sàng");
+                                 binding.sectionItemSelection.setEnabled(false);
+                                 binding.sectionItemSelection.setClickable(false);
+                                 binding.sectionItemSelection.setFocusable(false);
+                                 binding.sectionItemSelection.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+                             } else {
+                                 Gson gson = new Gson();
+                                 ErrorResponse error = gson.fromJson(
+                                         response.errorBody().charStream(), ErrorResponse.class
+                                 );
+                                 String message = error.getDetail();
+                                 showMessage(message);
+                             }
+                         }
+                         @Override
+                         public void onFailure(Call<MatchPlayer> call, Throwable t) {
+                             showMessage("Đã có lỗi xảy ra");
+                         }
+        }
+        );
+    }
+    private void Unready() {
+        Call<MatchPlayer> call = lobbyApiService.unready(currentLobby.getId());
+        call.enqueue(new Callback<MatchPlayer>() {
+                         @Override
+                         public void onResponse(Call<MatchPlayer> call, Response<MatchPlayer> response) {
+                             if (response.isSuccessful() && response.body() != null) {
+                                 showMessage("Đã hủy");
+                                 binding.sectionItemSelection.setEnabled(true);
+                                 binding.sectionItemSelection.setClickable(true);
+                                 binding.sectionItemSelection.setFocusable(true);
+                             } else {
+                                 Gson gson = new Gson();
+                                 ErrorResponse error = gson.fromJson(
+                                         response.errorBody().charStream(), ErrorResponse.class
+                                 );
+                                 String message = error.getDetail();
+                                 showMessage(message);
+                             }
+                         }
+                         @Override
+                         public void onFailure(Call<MatchPlayer> call, Throwable t) {
+                             showMessage("Đã có lỗi xảy ra");
+                         }
+                     }
+        );
+    }
+    @Override
+    protected void onDestroy() {
+        if (!isFinishing()) {
+            lobbyWebSocket.close();
+        }
+        super.onDestroy();
     }
 }

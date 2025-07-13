@@ -284,7 +284,7 @@ public class LobbyActivity extends AppCompatActivity {
                     showError("Tham gia thảnh công: "+room.getName());
                     //Navigate to Game activity
                     Intent intent = new Intent(LobbyActivity.this, GameActivity.class);
-                    intent.putExtra("room_id", response.body().getId().toString());
+                    intent.putExtra("room_id", response.body().getMatchId().toString());
                     startActivity(intent);
                     finish();
                 } else {
@@ -327,7 +327,7 @@ public class LobbyActivity extends AppCompatActivity {
                     showError("Tham gia thảnh công: "+roomCode);
                     //Navigate to Game activity
                     Intent intent = new Intent(LobbyActivity.this, GameActivity.class);
-                    intent.putExtra("room_id", response.body().getId().toString());
+                    intent.putExtra("room_id", response.body().getMatchId().toString());
                     startActivity(intent);
                     finish();
                 } else {
