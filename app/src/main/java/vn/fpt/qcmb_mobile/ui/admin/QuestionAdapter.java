@@ -1,6 +1,7 @@
 package vn.fpt.qcmb_mobile.ui.admin;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,7 +71,9 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
         this.filter = filterValue == null ? "all" : filterValue.toLowerCase();
         applyFilter();
     }
-
+    public List<Question> getFilteredQuestions() {
+        return new ArrayList<>(filteredQuestions);
+    }
     private void applyFilter() {
         filteredQuestions.clear();
         for (Question q : allQuestions) {
@@ -86,8 +89,11 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
                 filteredQuestions.add(q);
             }
         }
+        Log.d("QuestionDebug", "Sau lọc còn: " + filteredQuestions.size() + " câu hỏi");
+
         notifyDataSetChanged();
     }
+
 
     class QuestionViewHolder extends RecyclerView.ViewHolder {
         TextView tvQuestionCategory, tvQuestionDifficulty, tvQuestionPoints;
