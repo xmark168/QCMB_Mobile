@@ -124,9 +124,10 @@ public class QuestionManagementActivity extends AppCompatActivity implements Que
             public void onResponse(Call<List<Question>> c, Response<List<Question>> r) {
                 if (r.isSuccessful() && r.body() != null) {
                     allQuestions = r.body();
-
+                    Collections.sort(allQuestions, Comparator.comparing(Question::getQuestion, String.CASE_INSENSITIVE_ORDER));
                     // Hiển thị toàn bộ danh sách
                     adapter.updateQuestions(allQuestions);
+                    filterQuestions(etSearch.getText().toString());
 
 
                     updateStats();
@@ -144,16 +145,8 @@ public class QuestionManagementActivity extends AppCompatActivity implements Que
 
 
     private void filterQuestions(String q) {
-        filtered.clear();
-        for (Question qu : allQuestions) {
-            boolean mS = q.isEmpty() || qu.getQuestion().toLowerCase().contains(q.toLowerCase()) ||
-                    qu.getCategory().toLowerCase().contains(q.toLowerCase());
-            boolean mF = "all".equals(currentFilter) ||
-                    String.valueOf(qu.getDifficulty()).equalsIgnoreCase(currentFilter) ||
-                    qu.getCategory().toLowerCase().contains(currentFilter.toLowerCase());
-            if (mS && mF) filtered.add(qu);
-        }
-        adapter.updateQuestions(filtered);
+        adapter.setKeyword(q); // keyword từ EditText
+        adapter.setFilter(currentFilter); // độ khó hoặc tên chủ đề
         updateEmptyState();
     }
 

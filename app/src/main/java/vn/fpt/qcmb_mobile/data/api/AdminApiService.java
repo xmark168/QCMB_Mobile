@@ -7,16 +7,28 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import vn.fpt.qcmb_mobile.data.model.Question;
 import vn.fpt.qcmb_mobile.data.model.Topic;
 import vn.fpt.qcmb_mobile.data.model.User;
+import vn.fpt.qcmb_mobile.data.model.UserCreate;
 
 public interface AdminApiService {
     @GET("/api/users")
     Call<List<User>> getUsers();
+
+
+    @DELETE("/api/users/{id}")
+    Call<Void> deleteUser(@Path("id") int userId);
+
+    @PATCH("/api/users/{id}")
+    Call<User> updateUser(@Path("id") int userId, @Body User user);
+
+    @POST("/api/users")
+    Call<User> addUser(@Body UserCreate userCreate);
 
     @GET("/api/topics")
     Call<List<Topic>> getTopics();
