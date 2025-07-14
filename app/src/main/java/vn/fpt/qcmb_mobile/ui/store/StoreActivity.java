@@ -24,6 +24,7 @@ import vn.fpt.qcmb_mobile.data.api.AuthApiService;
 import vn.fpt.qcmb_mobile.data.api.PaymentApiService;
 import vn.fpt.qcmb_mobile.data.api.StoreApiService;
 import vn.fpt.qcmb_mobile.data.request.PurchaseRequest;
+import vn.fpt.qcmb_mobile.data.response.ItemResponse;
 import vn.fpt.qcmb_mobile.data.response.PaymentStatusResponse;
 import vn.fpt.qcmb_mobile.data.response.PurchaseResponse;
 import vn.fpt.qcmb_mobile.data.response.StoreItemListResponse;
@@ -113,7 +114,13 @@ public class StoreActivity extends AppCompatActivity {
                             int newBalance = purchaseResponse.getData().getNewBalance();
                             preferenceManager.updateTokenBalance(newBalance);
                             updateTokenDisplay();
-                            Toast.makeText(StoreActivity.this, "✅ Đã mua " + item.getName(), Toast.LENGTH_SHORT).show();
+                            ItemResponse awarded = purchaseResponse.getData().getItem();
+                            if (awarded.isFromGiftBox()) {
+                                Toast.makeText(StoreActivity.this, "🎉 Bạn nhận được: " + awarded.getName(), Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(StoreActivity.this, "✅ Đã mua " + awarded.getName(), Toast.LENGTH_SHORT).show();
+                            }
+//                            Toast.makeText(StoreActivity.this, "✅ Đã mua " + item.getName(), Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(StoreActivity.this, "Lỗi mua hàng", Toast.LENGTH_SHORT).show();
                         }
