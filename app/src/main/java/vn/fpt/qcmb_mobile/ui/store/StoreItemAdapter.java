@@ -133,7 +133,10 @@ public class StoreItemAdapter extends RecyclerView.Adapter<StoreItemAdapter.Stor
 //                    emoji = "\u23F3"; // ⏳  or \u23F1 for clock
 //                    bgColor = ContextCompat.getColor(context, R.color.secondary_green);
 //                    break;
-
+                case "GIFT_BOX":
+                    emoji = "🎁";
+                    bgColor = ContextCompat.getColor(context, R.color.primary_blue);
+                    break;
                 case "POWER_SCORE":
                     emoji = "\uD83D\uDD77\uFE0F";
                     bgColor = ContextCompat.getColor(context, R.color.secondary_red);
@@ -147,7 +150,7 @@ public class StoreItemAdapter extends RecyclerView.Adapter<StoreItemAdapter.Stor
                     bgColor = ContextCompat.getColor(context, R.color.secondary_orange);
                     break;
                 case "GHOST_TURN":
-                    emoji = "\uD83C\uDFB2";
+                    emoji = "\uD83D\uDC7B";
                     bgColor = ContextCompat.getColor(context, R.color.secondary_green);
                     break;
                 default:
