@@ -3,6 +3,7 @@ package vn.fpt.qcmb_mobile.ui.admin;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.*;
@@ -103,46 +104,65 @@ public class QuestionManagementActivity extends AppCompatActivity implements Que
             public void onResponse(Call<List<Topic>> call, Response<List<Topic>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     topicList = response.body();
+                    Log.d("QuestionDebug", "Số lượng topic nhận được: " + topicList.size());
+
                     topicNames.clear();
                     for (Topic t : topicList) topicNames.add(t.getName());
-                    loadQuestions();  // Load câu hỏi sau khi có topic
+
+                    loadQuestions(); // rất quan trọng!
                 } else {
+                    Log.e("QuestionDebug", "Không load được topics, code: " + response.code());
                     showError("Không tải được danh sách chủ đề");
                 }
             }
 
             @Override
             public void onFailure(Call<List<Topic>> call, Throwable t) {
+                Log.e("QuestionDebug", "Lỗi khi gọi getTopics", t);
                 showError("Lỗi tải chủ đề: " + t.getMessage());
             }
         });
     }
 
     private void loadQuestions() {
+        Log.d("QuestionDebug", "Đang gọi API loadQuestions...");
+
         api.getQuestions().enqueue(new Callback<List<Question>>() {
             @Override
             public void onResponse(Call<List<Question>> c, Response<List<Question>> r) {
+                Log.d("QuestionDebug", "onResponse gọi về: " + r.code());
+
                 if (r.isSuccessful() && r.body() != null) {
-                    allQuestions = r.body();
+                    List<Question> body = r.body();
+                    Log.d("QuestionDebug", "Số lượng câu hỏi nhận được: " + body.size());
+
+                    allQuestions = body;
                     Collections.sort(allQuestions, Comparator.comparing(Question::getQuestion, String.CASE_INSENSITIVE_ORDER));
-                    // Hiển thị toàn bộ danh sách
+
                     adapter.updateQuestions(allQuestions);
+                    adapter.setFilter("all");
                     filterQuestions(etSearch.getText().toString());
-
-
                     updateStats();
                 } else {
+                    Log.e("QuestionDebug", "loadQuestions thất bại - Mã lỗi: " + r.code());
+                    if (r.errorBody() != null) {
+                        try {
+                            Log.e("QuestionDebug", "Chi tiết lỗi: " + r.errorBody().string());
+                        } catch (Exception e) {
+                            Log.e("QuestionDebug", "Không đọc được errorBody", e);
+                        }
+                    }
                     showError("Tải câu hỏi thất bại: " + r.code());
                 }
             }
 
             @Override
             public void onFailure(Call<List<Question>> c, Throwable t) {
+                Log.e("QuestionDebug", "Lỗi mạng khi loadQuestions", t);
                 showError("Lỗi mạng: " + t.getMessage());
             }
         });
     }
-
 
     private void filterQuestions(String q) {
         adapter.setKeyword(q); // keyword từ EditText
@@ -151,8 +171,9 @@ public class QuestionManagementActivity extends AppCompatActivity implements Que
     }
 
     private void updateEmptyState() {
-        rv.setVisibility(filtered.isEmpty() ? View.GONE : View.VISIBLE);
-        layoutEmpty.setVisibility(filtered.isEmpty() ? View.VISIBLE : View.GONE);
+        boolean isEmpty = adapter.getFilteredQuestions().isEmpty();
+        rv.setVisibility(isEmpty ? View.GONE : View.VISIBLE);
+        layoutEmpty.setVisibility(isEmpty ? View.VISIBLE : View.GONE);
     }
 
     private void updateStats() {
