@@ -53,6 +53,8 @@ dependencies {
 
     // Image Loading
     implementation("com.github.bumptech.glide:glide:4.16.0")
+    annotationProcessor ("com.github.bumptech.glide:compiler:4.16.0")
+
 
     // WebSocket
     implementation("org.java-websocket:Java-WebSocket:1.5.4")

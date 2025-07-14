@@ -20,18 +20,22 @@ import java.util.List;
 public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.QuestionViewHolder> {
 
     private Context context;
-    private List<Question> questions;
+    private List<Question> allQuestions = new ArrayList<>();
+    private List<Question> filteredQuestions = new ArrayList<>();
     private OnQuestionActionListener listener;
+
+    private String keyword = "";
+    private String filter = "all"; // "all", "1", "2", "3", hoặc tên chủ đề
 
     public interface OnQuestionActionListener {
         void onEditQuestion(Question question);
         void onDeleteQuestion(Question question);
     }
 
-    public QuestionAdapter(Context context, List<Question> questions, OnQuestionActionListener listener) {
+    public QuestionAdapter(Context context, List<Question> initialQuestions, OnQuestionActionListener listener) {
         this.context = context;
-        this.questions = questions;
         this.listener = listener;
+        updateQuestions(initialQuestions);
     }
 
     @NonNull
@@ -43,24 +47,51 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
 
     @Override
     public void onBindViewHolder(@NonNull QuestionViewHolder holder, int position) {
-        holder.bind(questions.get(position));
+        holder.bind(filteredQuestions.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return questions.size();
+        return filteredQuestions.size();
     }
 
     public void updateQuestions(List<Question> newQuestions) {
-        questions.clear();
-        questions.addAll(newQuestions);
+        allQuestions.clear();
+        allQuestions.addAll(newQuestions);
+        applyFilter();
+    }
+
+    public void setKeyword(String kw) {
+        this.keyword = kw == null ? "" : kw.trim().toLowerCase();
+        applyFilter();
+    }
+
+    public void setFilter(String filterValue) {
+        this.filter = filterValue == null ? "all" : filterValue.toLowerCase();
+        applyFilter();
+    }
+
+    private void applyFilter() {
+        filteredQuestions.clear();
+        for (Question q : allQuestions) {
+            boolean matchKeyword = keyword.isEmpty()
+                    || q.getQuestion().toLowerCase().contains(keyword)
+                    || q.getCategory().toLowerCase().contains(keyword);
+
+            boolean matchFilter = filter.equals("all")
+                    || String.valueOf(q.getDifficulty()).equals(filter)
+                    || q.getCategory().toLowerCase().contains(filter);
+
+            if (matchKeyword && matchFilter) {
+                filteredQuestions.add(q);
+            }
+        }
         notifyDataSetChanged();
     }
 
     class QuestionViewHolder extends RecyclerView.ViewHolder {
         TextView tvQuestionCategory, tvQuestionDifficulty, tvQuestionPoints;
         TextView tvQuestionText, tvOptionA, tvOptionB, tvOptionC, tvOptionD;
-        TextView tvQuestionId;
         ImageButton btnEditQuestion, btnDeleteQuestion;
 
         public QuestionViewHolder(@NonNull View itemView) {
@@ -73,7 +104,6 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
             tvOptionB = itemView.findViewById(R.id.tvOptionB);
             tvOptionC = itemView.findViewById(R.id.tvOptionC);
             tvOptionD = itemView.findViewById(R.id.tvOptionD);
-            tvQuestionId = itemView.findViewById(R.id.tvQuestionId);
             btnEditQuestion = itemView.findViewById(R.id.btnEditQuestion);
             btnDeleteQuestion = itemView.findViewById(R.id.btnDeleteQuestion);
         }
@@ -82,28 +112,24 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
             tvQuestionCategory.setText(q.getCategory());
             tvQuestionText.setText(q.getQuestion());
             tvQuestionPoints.setText(q.getPoints() + " pts");
-            tvQuestionId.setText("ID: #" + q.getId());
 
             String difficulty = String.valueOf(q.getDifficulty());
-            tvQuestionDifficulty.setText(difficulty.substring(0,1).toUpperCase() + difficulty.substring(1));
+            String label = difficulty.equals("1") ? "Easy" : difficulty.equals("2") ? "Medium" : "Hard";
+            tvQuestionDifficulty.setText(label);
             int bg = R.drawable.bg_rank_default;
-            if ("easy".equalsIgnoreCase(difficulty)) bg = R.drawable.bg_rank_bronze;
-            else if ("medium".equalsIgnoreCase(difficulty)) bg = R.drawable.bg_rank_silver;
-            else if ("hard".equalsIgnoreCase(difficulty)) bg = R.drawable.bg_rank_gold;
+            if ("1".equals(difficulty)) bg = R.drawable.bg_rank_bronze;
+            else if ("2".equals(difficulty)) bg = R.drawable.bg_rank_silver;
+            else if ("3".equals(difficulty)) bg = R.drawable.bg_rank_gold;
             tvQuestionDifficulty.setBackgroundResource(bg);
 
             List<String> options = new ArrayList<>(q.getOptions());
             int correctIndex = q.getCorrectAnswerIndex();
             String correctAnswer = options.get(correctIndex);
 
-            // Shuffle options
             List<String> shuffledOptions = new ArrayList<>(options);
             Collections.shuffle(shuffledOptions);
-
-            // Find new index of correct answer after shuffle
             int newCorrectIndex = shuffledOptions.indexOf(correctAnswer);
 
-            // Set text for options
             tvOptionA.setText("A. " + shuffledOptions.get(0));
             tvOptionB.setText("B. " + shuffledOptions.get(1));
             tvOptionC.setText("C. " + shuffledOptions.get(2));
