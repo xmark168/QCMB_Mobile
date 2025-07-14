@@ -1,19 +1,15 @@
 package vn.fpt.qcmb_mobile.ui.admin;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import vn.fpt.qcmb_mobile.R;
 import vn.fpt.qcmb_mobile.data.model.Question;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -21,12 +17,8 @@ import java.util.List;
 public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.QuestionViewHolder> {
 
     private Context context;
-    private List<Question> allQuestions = new ArrayList<>();
     private List<Question> filteredQuestions = new ArrayList<>();
     private OnQuestionActionListener listener;
-
-    private String keyword = "";
-    private String filter = "all"; // "all", "1", "2", "3", hoặc tên chủ đề
 
     public interface OnQuestionActionListener {
         void onEditQuestion(Question question);
@@ -57,43 +49,14 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
     }
 
     public void updateQuestions(List<Question> newQuestions) {
-        allQuestions.clear();
-        allQuestions.addAll(newQuestions);
-        applyFilter();
-    }
-
-    public void setKeyword(String kw) {
-        this.keyword = kw == null ? "" : kw.trim().toLowerCase();
-        applyFilter();
-    }
-
-    public void setFilter(String filterValue) {
-        this.filter = filterValue == null ? "all" : filterValue.toLowerCase();
-        applyFilter();
-    }
-    public List<Question> getFilteredQuestions() {
-        return new ArrayList<>(filteredQuestions);
-    }
-    private void applyFilter() {
         filteredQuestions.clear();
-        for (Question q : allQuestions) {
-            boolean matchKeyword = keyword.isEmpty()
-                    || q.getQuestion().toLowerCase().contains(keyword)
-                    || q.getCategory().toLowerCase().contains(keyword);
-
-            boolean matchFilter = filter.equals("all")
-                    || String.valueOf(q.getDifficulty()).equals(filter)
-                    || q.getCategory().toLowerCase().contains(filter);
-
-            if (matchKeyword && matchFilter) {
-                filteredQuestions.add(q);
-            }
-        }
-        Log.d("QuestionDebug", "Sau lọc còn: " + filteredQuestions.size() + " câu hỏi");
-
+        filteredQuestions.addAll(newQuestions);
         notifyDataSetChanged();
     }
 
+    public List<Question> getFilteredQuestions() {
+        return new ArrayList<>(filteredQuestions);
+    }
 
     class QuestionViewHolder extends RecyclerView.ViewHolder {
         TextView tvQuestionCategory, tvQuestionDifficulty, tvQuestionPoints;

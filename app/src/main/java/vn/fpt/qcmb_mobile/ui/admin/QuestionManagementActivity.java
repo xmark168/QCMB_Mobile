@@ -140,7 +140,7 @@ public class QuestionManagementActivity extends AppCompatActivity implements Que
                     Collections.sort(allQuestions, Comparator.comparing(Question::getQuestion, String.CASE_INSENSITIVE_ORDER));
 
                     adapter.updateQuestions(allQuestions);
-                    adapter.setFilter("all");
+
                     filterQuestions(etSearch.getText().toString());
                     updateStats();
                 } else {
@@ -164,9 +164,31 @@ public class QuestionManagementActivity extends AppCompatActivity implements Que
         });
     }
 
-    private void filterQuestions(String q) {
-        adapter.setKeyword(q); // keyword từ EditText
-        adapter.setFilter(currentFilter); // độ khó hoặc tên chủ đề
+    private void filterQuestions(String keyword) {
+        filtered.clear();
+        String kwNorm = normalize(keyword);
+        String filterNorm = normalize(currentFilter);
+
+        for (Question q : allQuestions) {
+            String catNorm = normalize(q.getCategory());
+            String topicNorm = normalize(getTopicNameById(q.getTopic_id()));
+
+            boolean matchKeyword = kwNorm.isEmpty()
+                    || normalize(q.getQuestion()).contains(kwNorm)
+                    || catNorm.contains(kwNorm)
+                    || topicNorm.contains(kwNorm);
+
+            boolean matchFilter = filterNorm.equals("all")
+                    || String.valueOf(q.getDifficulty()).equals(filterNorm)
+                    || catNorm.contains(filterNorm)
+                    || topicNorm.contains(filterNorm);
+
+            if (matchKeyword && matchFilter) {
+                filtered.add(q);
+            }
+        }
+
+        adapter.updateQuestions(filtered);
         updateEmptyState();
     }
 
@@ -321,6 +343,16 @@ public class QuestionManagementActivity extends AppCompatActivity implements Que
         d.show();
     }
 
+    private String normalize(String str) {
+        return str == null ? "" : str.replaceAll("[^\\p{L}\\p{N}\\s]", "").trim().toLowerCase();
+    }
+
+    private String getTopicNameById(String topicId) {
+        for (Topic t : topicList) {
+            if (t.getId().equals(topicId)) return t.getName();
+        }
+        return "";
+    }
     @Override
     public void onEditQuestion(Question question) {
         showQuestionDialog(question, true);
