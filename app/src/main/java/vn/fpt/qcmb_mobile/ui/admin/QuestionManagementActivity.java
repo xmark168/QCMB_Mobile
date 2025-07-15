@@ -215,9 +215,9 @@ public class QuestionManagementActivity extends AppCompatActivity implements Que
         List<String> opts = new ArrayList<>();
         List<String> vals = new ArrayList<>();
         opts.add("Tất cả"); vals.add("all");
-        opts.add("🟢 Dễ"); vals.add("1");
-        opts.add("🔵 Trung bình"); vals.add("2");
-        opts.add("🔴 Khó"); vals.add("3");
+        opts.add("Dễ"); vals.add("1");
+        opts.add("Trung bình"); vals.add("2");
+        opts.add("Khó"); vals.add("3");
         for (Topic t : topicList) {
             opts.add("📘 " + t.getName());
             vals.add(t.getName().toLowerCase());
