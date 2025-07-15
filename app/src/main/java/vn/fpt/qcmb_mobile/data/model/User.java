@@ -2,7 +2,9 @@ package vn.fpt.qcmb_mobile.data.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class User {
+import java.io.Serializable;
+
+public class User  implements Serializable {
     @SerializedName("id")
     private int id;
 

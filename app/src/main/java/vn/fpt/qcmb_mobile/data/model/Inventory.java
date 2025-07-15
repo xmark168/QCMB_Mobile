@@ -1,8 +1,15 @@
 package vn.fpt.qcmb_mobile.data.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
 import com.google.gson.annotations.SerializedName;
 
-public class Inventory {
+import java.io.Serializable;
+
+public class Inventory  implements Serializable {
     @SerializedName("id")
     private String id;
     @SerializedName("user_id")
@@ -93,4 +100,6 @@ public class Inventory {
     public void setCard(Card card) {
         this.card = card;
     }
+
+
 }

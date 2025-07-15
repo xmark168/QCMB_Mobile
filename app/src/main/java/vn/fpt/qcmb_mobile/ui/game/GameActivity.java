@@ -55,6 +55,7 @@ public class GameActivity extends AppCompatActivity implements PlayerAdapter.OnP
     private PlayerAdapter playerAdapter;
     private List<Inventory> playerInventories;
     private LobbyWebSocket lobbyWebSocket;
+    private List<MatchPlayer> listPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,9 +75,7 @@ public class GameActivity extends AppCompatActivity implements PlayerAdapter.OnP
             @Override
             public void onEvent(String type, Map<String, Object> data) {
                 runOnUiThread(() -> {
-                    Log.d("WEBSOCKET",type);
-
-                    switch (type) {
+                       switch (type) {
                         case "system":
                             Toast.makeText(GameActivity.this,
                                     "WebSocket connected", Toast.LENGTH_SHORT).show();
@@ -89,6 +88,10 @@ public class GameActivity extends AppCompatActivity implements PlayerAdapter.OnP
                                 GetPlayersList();
                                 Log.d("WEBSOCKET",event);
 
+                            }
+                            else if("start".equals(event))
+                            {
+                                startPlayerGame();
                             }
                             break;
                         case "error":
@@ -169,11 +172,12 @@ public class GameActivity extends AppCompatActivity implements PlayerAdapter.OnP
             public void onResponse(@NonNull Call<List<MatchPlayer>> call, @NonNull Response<List<MatchPlayer>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     List<MatchPlayer> listPlayers = response.body();
+                    listPlayer = response.body();
                     binding.tvPlayerCount.setText(listPlayers.size() + "/" + currentLobby.getPlayerCountLimit());
                     boolean isReady = true;
                     for(MatchPlayer player : listPlayers)
                     {
-                        if("waiting".equals(player.getStatus()) && !isHost())
+                        if("waiting".equals(player.getStatus()) && player.getUser().getId()!=currentLobby.getHostUserId())
                             isReady = false;
                         if(player.getUserId() == preferenceManager.getId())
                         {
@@ -308,21 +312,60 @@ public class GameActivity extends AppCompatActivity implements PlayerAdapter.OnP
        if(binding.btnStartGame.getText().toString().equals("Sẵn sàng"))
        {
            Ready();
-           GetPlayersList();
        }
        else if(binding.btnStartGame.getText().toString().equals("Hủy"))
        {
            Unready();
-           GetPlayersList();
        }
        else if(binding.btnStartGame.getText().toString().equals("Bắt đầu"))
        {
-
+           startGame();
        }
        else
        {
            //Không làm gì cả
        }
+    }
+    private void startGame()
+    {
+        int selectedItemCount = itemAdapter != null ? itemAdapter.getTotalSelectedItems() : 0;
+
+        // Chỉ check nếu vượt quá limit
+        if (selectedItemCount > currentLobby.getMaxItemsPerPlayer()) {
+            Toast.makeText(this, "❌ Chỉ được chọn tối đa " + currentLobby.getMaxItemsPerPlayer() + " items!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        String message = "🎮 Bắt đầu game với " + listPlayer.size() + " người chơi";
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        lobbyApiService.startGame(currentLobby.getId()).enqueue(new Callback<Lobby>() {
+            @Override
+            public void onResponse(Call<Lobby> call, Response<Lobby> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                   showMessage("Đã bắt đầu phòng chơi");
+                } else {
+                    Gson gson = new Gson();
+                    ErrorResponse error = gson.fromJson(
+                            response.errorBody().charStream(), ErrorResponse.class
+                    );
+                    String message = error.getDetail();
+                    showMessage(message);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Lobby> call, Throwable t) {
+                showMessage("Đã có lỗi ở máy chủ vui lòng tải lại!");
+            }
+        });
+    }
+    private void startPlayerGame()
+    {
+        lobbyWebSocket.close();
+        Intent intent = new Intent(this, GameArenaActivity.class);
+        intent.putExtra("room_id", currentRoomId);
+        intent.putExtra("inventory_list", (java.io.Serializable) playerInventories);
+        startActivity(intent);
+        finish();
     }
     private void leaveRoom() {
 
@@ -353,6 +396,8 @@ public class GameActivity extends AppCompatActivity implements PlayerAdapter.OnP
                                  binding.sectionItemSelection.setClickable(false);
                                  binding.sectionItemSelection.setFocusable(false);
                                  binding.sectionItemSelection.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+                                 GetPlayersList();
+
                              } else {
                                  Gson gson = new Gson();
                                  ErrorResponse error = gson.fromJson(
@@ -379,6 +424,8 @@ public class GameActivity extends AppCompatActivity implements PlayerAdapter.OnP
                                  binding.sectionItemSelection.setEnabled(true);
                                  binding.sectionItemSelection.setClickable(true);
                                  binding.sectionItemSelection.setFocusable(true);
+                                 GetPlayersList();
+
                              } else {
                                  Gson gson = new Gson();
                                  ErrorResponse error = gson.fromJson(

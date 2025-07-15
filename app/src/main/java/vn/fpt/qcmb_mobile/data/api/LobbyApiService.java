@@ -34,6 +34,9 @@ public interface LobbyApiService {
     @GET("lobby/{lobby_id}/players")
     Call<List<MatchPlayer>> ListPlayers(@Path("lobby_id") UUID lobbyId);
 
+    @GET("lobby/{lobby_id}/players/playing")
+    Call<List<MatchPlayer>> ListPlayersPlaying(@Path("lobby_id") UUID lobbyId);
+
     @GET("lobby/{lobby_id}")
     Call<Lobby> getCurrentLobby(@Path("lobby_id") UUID lobbyId);
 
@@ -42,4 +45,7 @@ public interface LobbyApiService {
 
     @POST("lobby/{lobby_id}/unready")
     Call<MatchPlayer> unready(@Path("lobby_id") UUID LobbyId);
+
+    @POST("lobby/{lobby_id}/start")
+    Call<Lobby> startGame(@Path("lobby_id") UUID LobbyId);
 }
