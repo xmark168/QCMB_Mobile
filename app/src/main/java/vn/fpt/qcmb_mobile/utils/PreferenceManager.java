@@ -51,6 +51,11 @@ public class PreferenceManager {
         editor.apply();
     }
 
+    public void saveUserRole(String role) {
+        editor.putString(KEY_USER_ROLE, role);
+        editor.apply();
+    }
+
     public void saveUserInfo(int id, String name, String username, String email, String avatar, int tokenBalance, int score) {
         editor.putInt(KEY_USER_ID, id);
         editor.putString(KEY_USER_NAME, name);
