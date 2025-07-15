@@ -81,7 +81,7 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.Inve
             case "Point Steal": return "\uD83D\uDD77\uFE0F";
             case "Power Score": return "\uD83D\uDCA5";
             case "Double Score": return "⚡";
-            case "Ghost Turn": return "\uD83C\uDFB2";
+            case "Ghost Turn": return "\uD83D\uDC7B";
             default: return "🎁";
         }
     }

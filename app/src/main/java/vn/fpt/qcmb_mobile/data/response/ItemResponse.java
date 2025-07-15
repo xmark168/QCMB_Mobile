@@ -15,18 +15,8 @@ public class ItemResponse {
     private String effectType;
     @SerializedName("quantity")
     private int quantity;
-
-    public ItemResponse() {
-    }
-
-    public ItemResponse(int id, String name, int price, String description, String effectType, int quantity) {
-        this.id = id;
-        this.name = name;
-        this.price = price;
-        this.description = description;
-        this.effectType = effectType;
-        this.quantity = quantity;
-    }
+    @SerializedName("from_gift_box")
+    private boolean fromGiftBox;
 
     public int getId() {
         return id;
@@ -75,4 +65,6 @@ public class ItemResponse {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
+
+    public boolean isFromGiftBox() { return fromGiftBox; }
 }

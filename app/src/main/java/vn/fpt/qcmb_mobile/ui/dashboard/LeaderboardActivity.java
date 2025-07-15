@@ -66,7 +66,7 @@ public class LeaderboardActivity extends AppCompatActivity {
                     LeaderboardResponse lb = response.body();
                     if (lb.getData() != null && !lb.getData().isEmpty()) {
                         adapter.updateData(lb.getData());
-                        Toast.makeText(LeaderboardActivity.this, "Đã tải " + lb.getData().size() + " người chơi", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(LeaderboardActivity.this, "Đã tải " + lb.getData().size() + " người chơi", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(LeaderboardActivity.this, "Bảng xếp hạng hiện tại trống", Toast.LENGTH_SHORT).show();
                     }
