@@ -63,7 +63,7 @@ public class GamePlayerAdapter extends RecyclerView.Adapter<GamePlayerAdapter.Ga
         public void bind(MatchPlayer player) {
             // Set player info
             tvPlayerName.setText(player.getUser().getName());
-            tvScore.setText(String.valueOf(player.getScore()));
+            tvScore.setText("Điểm: "+String.valueOf(player.getScore()));
             tvHandSize.setText("🃏 " + player.getCardsLeft());
 
             // Show/hide current turn indicator

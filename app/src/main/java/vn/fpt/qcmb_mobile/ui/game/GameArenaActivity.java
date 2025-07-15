@@ -3,6 +3,7 @@ package vn.fpt.qcmb_mobile.ui.game;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -176,8 +177,25 @@ public class GameArenaActivity extends AppCompatActivity implements HandCardAdap
         });
     }
 
-    private void getCardDetails() {
+    private void showQuestion(MatchCard card)  {
+        binding.cardWaiting.setVisibility(View.GONE);
+        binding.cardCurrentQuestion.setVisibility(View.VISIBLE);
 
+        binding.tvQuestionTitle.setText("Câu hỏi " + card.getQuestion().getCategory());
+        binding.tvQuestionContent.setText(card.getQuestion().getQuestion());
+
+        // Show item indicator if card has item
+        if (card.getItemId() != null) {
+            binding.tvItemIndicator.setVisibility(View.VISIBLE);
+            //binding.tvItemIndicator.setText(card.getAttachedItemIcon() + " " + card.getAttachedItem());
+        } else {
+            binding.tvItemIndicator.setVisibility(View.GONE);
+        }
+
+        binding.btnAnswer1.setText("A. " + options.get(0));
+        btnAnswer2.setText("B. " + options.get(1));
+        btnAnswer3.setText("C. " + options.get(2));
+        btnAnswer4.setText("D. " + options.get(3));
     }
 
     private void UpdateScore() {
@@ -199,7 +217,7 @@ public class GameArenaActivity extends AppCompatActivity implements HandCardAdap
         handCardAdapter.setSelectedPosition(position);
 
         // Show question
-        //showQuestion(card);
+        showQuestion(card);
     }
 
     @Override
