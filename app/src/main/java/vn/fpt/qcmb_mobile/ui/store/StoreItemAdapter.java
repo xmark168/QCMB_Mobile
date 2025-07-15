@@ -117,20 +117,40 @@ public class StoreItemAdapter extends RecyclerView.Adapter<StoreItemAdapter.Stor
             String emoji;
             int bgColor;
             switch (item.getEffectType()) {
-                case "SKIP_TURN":
-                    emoji = "\u23E9"; // ⏩
+//                case "SKIP_TURN":
+//                    emoji = "\u23E9"; // ⏩
+//                    bgColor = ContextCompat.getColor(context, R.color.secondary_red);
+//                    break;
+//                case "REVERSE_ORDER":
+//                    emoji = "\uD83D\uDD04"; // 🔄
+//                    bgColor = ContextCompat.getColor(context, R.color.primary_blue);
+//                    break;
+//                case "DOUBLE_SCORE":
+//                    emoji = "\u26A1"; // ⚡
+//                    bgColor = ContextCompat.getColor(context, R.color.secondary_orange);
+//                    break;
+//                case "EXTRA_TIME":
+//                    emoji = "\u23F3"; // ⏳  or \u23F1 for clock
+//                    bgColor = ContextCompat.getColor(context, R.color.secondary_green);
+//                    break;
+                case "GIFT_BOX":
+                    emoji = "🎁";
+                    bgColor = ContextCompat.getColor(context, R.color.primary_blue);
+                    break;
+                case "POWER_SCORE":
+                    emoji = "\uD83D\uDD77\uFE0F";
                     bgColor = ContextCompat.getColor(context, R.color.secondary_red);
                     break;
-                case "REVERSE_ORDER":
-                    emoji = "\uD83D\uDD04"; // 🔄
+                case "POINT_STEAL":
+                    emoji = "\uD83D\uDCA5";
                     bgColor = ContextCompat.getColor(context, R.color.primary_blue);
                     break;
                 case "DOUBLE_SCORE":
-                    emoji = "\u26A1"; // ⚡
+                    emoji = "\u26A1";
                     bgColor = ContextCompat.getColor(context, R.color.secondary_orange);
                     break;
-                case "EXTRA_TIME":
-                    emoji = "\u23F3"; // ⏳  or \u23F1 for clock
+                case "GHOST_TURN":
+                    emoji = "\uD83D\uDC7B";
                     bgColor = ContextCompat.getColor(context, R.color.secondary_green);
                     break;
                 default:

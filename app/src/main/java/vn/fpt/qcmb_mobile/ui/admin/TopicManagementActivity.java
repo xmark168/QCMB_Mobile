@@ -22,6 +22,7 @@ import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import retrofit2.Call;
@@ -107,6 +108,7 @@ public class TopicManagementActivity extends AppCompatActivity implements TopicA
             public void onResponse(@NonNull Call<List<Topic>> call, @NonNull Response<List<Topic>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     allTopics = response.body();
+                    Collections.sort(allTopics, (t1, t2) -> t1.getName().compareToIgnoreCase(t2.getName()));
                     Log.d("LOAD_TOPICS", "Số lượng topic: " + allTopics.size() + ", Danh sách: " + new Gson().toJson(allTopics));
                     filterTopics(etSearchTopic.getText().toString());
                 } else {

@@ -117,6 +117,8 @@ public class LoginActivity extends AppCompatActivity {
     private void handleSuccessfulLogin(AuthResponse authResponse) {
         String role = decodeRoleFromToken(authResponse.getAccessToken());
 
+        preferenceManager.saveUserRole(role);
+
         // Lưu token và role
         preferenceManager.saveAuthData(
                 authResponse.getAccessToken(),

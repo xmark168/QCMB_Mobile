@@ -74,20 +74,28 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.Inve
 
     private String getEmojiForItem(String itemName) {
         switch (itemName) {
-            case "Skip Turn": return "⏩";
-            case "Reverse": return "🔄";
+//            case "Skip Turn": return "⏩";
+//            case "Reverse": return "🔄";
+//            case "Double Score": return "⚡";
+//            case "Extra Time": return "⏳";
+            case "Point Steal": return "\uD83D\uDD77\uFE0F";
+            case "Power Score": return "\uD83D\uDCA5";
             case "Double Score": return "⚡";
-            case "Extra Time": return "⏳";
+            case "Ghost Turn": return "\uD83D\uDC7B";
             default: return "🎁";
         }
     }
 
     private String getDescriptionForItem(String itemName) {
         switch (itemName) {
-            case "Skip Turn": return "Bỏ qua lượt của đối thủ";
-            case "Reverse": return "Đảo ngược thứ tự";
+//            case "Skip Turn": return "Bỏ qua lượt của đối thủ";
+//            case "Reverse": return "Đảo ngược thứ tự";
+//            case "Double Score": return "Nhân đôi điểm số";
+//            case "Extra Time": return "Thêm thời gian";
+            case "Power Score": return "Nhân 1.5 điểm số";
+            case "Point Steal": return "Trộm điểm";
             case "Double Score": return "Nhân đôi điểm số";
-            case "Extra Time": return "Thêm thời gian";
+            case "Ghost Turn": return "Bỏ lượt và nhận điểm";
             default: return "Item đặc biệt";
         }
     }
@@ -110,26 +118,41 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.Inve
             tvEmojiIcon.setText(item.getIconEmoji());
 
             // Hiển thị quantity badge
-            if (item.getTotalQuantity() > 1) {
-                cardQuantityBadge.setVisibility(View.VISIBLE);
-                tvQuantity.setText("x" + item.getTotalQuantity());
-            } else {
-                cardQuantityBadge.setVisibility(View.GONE);
-            }
+//            if (item.getTotalQuantity() > 1) {
+//                cardQuantityBadge.setVisibility(View.VISIBLE);
+//                tvQuantity.setText("x" + item.getTotalQuantity());
+//            } else {
+//                cardQuantityBadge.setVisibility(View.GONE);
+//            }
+
+            cardQuantityBadge.setVisibility(View.VISIBLE);
+            tvQuantity.setText("x" + item.getTotalQuantity());
 
             // Set background color based on item
             int bgColor;
             switch (item.getName()) {
-                case "Skip Turn":
+//                case "Skip Turn":
+//                    bgColor = ContextCompat.getColor(itemView.getContext(), R.color.secondary_red);
+//                    break;
+//                case "Reverse":
+//                    bgColor = ContextCompat.getColor(itemView.getContext(), R.color.primary_blue);
+//                    break;
+//                case "Double Score":
+//                    bgColor = ContextCompat.getColor(itemView.getContext(), R.color.secondary_orange);
+//                    break;
+//                case "Extra Time":
+//                    bgColor = ContextCompat.getColor(itemView.getContext(), R.color.secondary_green);
+//                    break;
+                case "Power Score":
                     bgColor = ContextCompat.getColor(itemView.getContext(), R.color.secondary_red);
                     break;
-                case "Reverse":
+                case "Point Steal":
                     bgColor = ContextCompat.getColor(itemView.getContext(), R.color.primary_blue);
                     break;
                 case "Double Score":
                     bgColor = ContextCompat.getColor(itemView.getContext(), R.color.secondary_orange);
                     break;
-                case "Extra Time":
+                case "Ghost Turn":
                     bgColor = ContextCompat.getColor(itemView.getContext(), R.color.secondary_green);
                     break;
                 default:

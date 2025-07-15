@@ -3,6 +3,7 @@ package vn.fpt.qcmb_mobile.ui.admin;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.*;
@@ -103,63 +104,98 @@ public class QuestionManagementActivity extends AppCompatActivity implements Que
             public void onResponse(Call<List<Topic>> call, Response<List<Topic>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     topicList = response.body();
+                    Log.d("QuestionDebug", "Số lượng topic nhận được: " + topicList.size());
+
                     topicNames.clear();
                     for (Topic t : topicList) topicNames.add(t.getName());
-                    loadQuestions();  // Load câu hỏi sau khi có topic
+
+                    loadQuestions(); // rất quan trọng!
                 } else {
+                    Log.e("QuestionDebug", "Không load được topics, code: " + response.code());
                     showError("Không tải được danh sách chủ đề");
                 }
             }
 
             @Override
             public void onFailure(Call<List<Topic>> call, Throwable t) {
+                Log.e("QuestionDebug", "Lỗi khi gọi getTopics", t);
                 showError("Lỗi tải chủ đề: " + t.getMessage());
             }
         });
     }
 
     private void loadQuestions() {
+        Log.d("QuestionDebug", "Đang gọi API loadQuestions...");
+
         api.getQuestions().enqueue(new Callback<List<Question>>() {
             @Override
             public void onResponse(Call<List<Question>> c, Response<List<Question>> r) {
-                if (r.isSuccessful() && r.body() != null) {
-                    allQuestions = r.body();
+                Log.d("QuestionDebug", "onResponse gọi về: " + r.code());
 
-                    // Hiển thị toàn bộ danh sách
+                if (r.isSuccessful() && r.body() != null) {
+                    List<Question> body = r.body();
+                    Log.d("QuestionDebug", "Số lượng câu hỏi nhận được: " + body.size());
+
+                    allQuestions = body;
+                    Collections.sort(allQuestions, Comparator.comparing(Question::getQuestion, String.CASE_INSENSITIVE_ORDER));
+
                     adapter.updateQuestions(allQuestions);
 
-
+                    filterQuestions(etSearch.getText().toString());
                     updateStats();
                 } else {
+                    Log.e("QuestionDebug", "loadQuestions thất bại - Mã lỗi: " + r.code());
+                    if (r.errorBody() != null) {
+                        try {
+                            Log.e("QuestionDebug", "Chi tiết lỗi: " + r.errorBody().string());
+                        } catch (Exception e) {
+                            Log.e("QuestionDebug", "Không đọc được errorBody", e);
+                        }
+                    }
                     showError("Tải câu hỏi thất bại: " + r.code());
                 }
             }
 
             @Override
             public void onFailure(Call<List<Question>> c, Throwable t) {
+                Log.e("QuestionDebug", "Lỗi mạng khi loadQuestions", t);
                 showError("Lỗi mạng: " + t.getMessage());
             }
         });
     }
 
-
-    private void filterQuestions(String q) {
+    private void filterQuestions(String keyword) {
         filtered.clear();
-        for (Question qu : allQuestions) {
-            boolean mS = q.isEmpty() || qu.getQuestion().toLowerCase().contains(q.toLowerCase()) ||
-                    qu.getCategory().toLowerCase().contains(q.toLowerCase());
-            boolean mF = "all".equals(currentFilter) ||
-                    String.valueOf(qu.getDifficulty()).equalsIgnoreCase(currentFilter) ||
-                    qu.getCategory().toLowerCase().contains(currentFilter.toLowerCase());
-            if (mS && mF) filtered.add(qu);
+        String kwNorm = normalize(keyword);
+        String filterNorm = normalize(currentFilter);
+
+        for (Question q : allQuestions) {
+            String catNorm = normalize(q.getCategory());
+            String topicNorm = normalize(getTopicNameById(q.getTopic_id()));
+
+            boolean matchKeyword = kwNorm.isEmpty()
+                    || normalize(q.getQuestion()).contains(kwNorm)
+                    || catNorm.contains(kwNorm)
+                    || topicNorm.contains(kwNorm);
+
+            boolean matchFilter = filterNorm.equals("all")
+                    || String.valueOf(q.getDifficulty()).equals(filterNorm)
+                    || catNorm.contains(filterNorm)
+                    || topicNorm.contains(filterNorm);
+
+            if (matchKeyword && matchFilter) {
+                filtered.add(q);
+            }
         }
+
         adapter.updateQuestions(filtered);
         updateEmptyState();
     }
 
     private void updateEmptyState() {
-        rv.setVisibility(filtered.isEmpty() ? View.GONE : View.VISIBLE);
-        layoutEmpty.setVisibility(filtered.isEmpty() ? View.VISIBLE : View.GONE);
+        boolean isEmpty = adapter.getFilteredQuestions().isEmpty();
+        rv.setVisibility(isEmpty ? View.GONE : View.VISIBLE);
+        layoutEmpty.setVisibility(isEmpty ? View.VISIBLE : View.GONE);
     }
 
     private void updateStats() {
@@ -179,9 +215,9 @@ public class QuestionManagementActivity extends AppCompatActivity implements Que
         List<String> opts = new ArrayList<>();
         List<String> vals = new ArrayList<>();
         opts.add("Tất cả"); vals.add("all");
-        opts.add("🟢 Dễ"); vals.add("1");
-        opts.add("🔵 Trung bình"); vals.add("2");
-        opts.add("🔴 Khó"); vals.add("3");
+        opts.add("Dễ"); vals.add("1");
+        opts.add("Trung bình"); vals.add("2");
+        opts.add("Khó"); vals.add("3");
         for (Topic t : topicList) {
             opts.add("📘 " + t.getName());
             vals.add(t.getName().toLowerCase());
@@ -307,6 +343,16 @@ public class QuestionManagementActivity extends AppCompatActivity implements Que
         d.show();
     }
 
+    private String normalize(String str) {
+        return str == null ? "" : str.replaceAll("[^\\p{L}\\p{N}\\s]", "").trim().toLowerCase();
+    }
+
+    private String getTopicNameById(String topicId) {
+        for (Topic t : topicList) {
+            if (t.getId().equals(topicId)) return t.getName();
+        }
+        return "";
+    }
     @Override
     public void onEditQuestion(Question question) {
         showQuestionDialog(question, true);

@@ -91,11 +91,11 @@ public class AdminDashboardActivity extends AppCompatActivity {
             Intent intent = new Intent(this, QuestionManagementActivity.class);
             startActivity(intent);
         });
-//
-//        cardUserManagement.setOnClickListener(v -> {
-//            Intent intent = new Intent(this, UserManagementActivity.class);
-//            startActivity(intent);
-//        });
+
+        cardUserManagement.setOnClickListener(v -> {
+            Intent intent = new Intent(this, UserManagementActivity.class);
+            startActivity(intent);
+        });
     }
 
     private void loadStatistics() {
