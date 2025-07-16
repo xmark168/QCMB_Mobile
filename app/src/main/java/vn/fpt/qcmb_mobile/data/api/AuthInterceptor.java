@@ -39,7 +39,7 @@ public class AuthInterceptor implements Interceptor {
          Response response = chain.proceed(builder.build());
 
         // If token is invalid or expired
-        if (response.code() == 401) {
+        if (response.code() == 401 || response.code() == 403) {
             // Remove token
             preferenceManager.clearAll();
 

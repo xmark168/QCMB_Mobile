@@ -1,5 +1,6 @@
 package vn.fpt.qcmb_mobile.ui.game;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,7 +55,6 @@ public class HandCardAdapter extends RecyclerView.Adapter<HandCardAdapter.HandCa
         int previousSelected = selectedPosition;
         selectedPosition = position;
         
-        // Refresh previous and current selection
         if (previousSelected != -1) {
             notifyItemChanged(previousSelected);
         }
@@ -109,9 +109,10 @@ public class HandCardAdapter extends RecyclerView.Adapter<HandCardAdapter.HandCa
             });
         }
         
+        @SuppressLint("SetTextI18n")
         public void bind(MatchCard card, int position) {
             // Set question title
-            tvQuestionTitle.setText(card.getQuestion().getQuestion().substring(0,20));
+            tvQuestionTitle.setText("Câu hỏi số "+card.getOrderNo());
             
             // Show/hide item badge
             if (card.getItemId()!=null) {

@@ -32,6 +32,17 @@ public class MatchCard {
     @SerializedName("item_id")
     private UUID itemId;
 
+    @SerializedName("item")
+    private Card item;
+
+    public Card getItem() {
+        return item;
+    }
+
+    public void setItem(Card item) {
+        this.item = item;
+    }
+
     public UUID getItemId() {
         return itemId;
     }

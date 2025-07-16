@@ -190,7 +190,19 @@ public class ProfileActivity extends AppCompatActivity {
                 .transform(new CircleCrop())
                 .into(ivAvatar);
     }
-
+    private String getEmojiForItem(String itemName) {
+        switch (itemName) {
+//            case "Skip Turn": return "⏩";
+//            case "Reverse": return "🔄";
+//            case "Double Score": return "⚡";
+//            case "Extra Time": return "⏳";
+            case "Point Steal": return "\uD83D\uDD77\uFE0F";
+            case "Power Score": return "\uD83D\uDCA5";
+            case "Double Score": return "⚡";
+            case "Ghost Turn": return "\uD83D\uDC7B";
+            default: return "🎁";
+        }
+    }
     private void loadGameStats() {
         tvGamesPlayed.setText("0");
         tvTotalScore.setText(String.valueOf(preferenceManager.getUserScore()));
