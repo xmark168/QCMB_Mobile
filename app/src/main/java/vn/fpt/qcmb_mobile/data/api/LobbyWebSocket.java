@@ -33,8 +33,8 @@ public class LobbyWebSocket extends WebSocketListener {
     }
     public void connect(String token) {
         Request request = new Request.Builder()
-                .url(String.format("ws://10.0.2.2:8000/api/ws/%s/%s", lobbyId, username))
-                .addHeader("Origin", "http://10.0.2.2")
+                .url(String.format("ws://31.97.187.91:8000/api/ws/%s/%s", lobbyId, username))
+                .addHeader("Origin", "http://31.97.187.91")
                 .build();
         ws = client.newWebSocket(request, this);
     }

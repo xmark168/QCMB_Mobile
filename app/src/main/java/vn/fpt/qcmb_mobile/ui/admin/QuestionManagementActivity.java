@@ -171,7 +171,7 @@ public class QuestionManagementActivity extends AppCompatActivity implements Que
 
         for (Question q : allQuestions) {
             String catNorm = normalize(q.getCategory());
-            String topicNorm = normalize(getTopicNameById(q.getTopic_id()));
+            String topicNorm = normalize(getTopicNameById(q.getTopicId().toString()));
 
             boolean matchKeyword = kwNorm.isEmpty()
                     || normalize(q.getQuestion()).contains(kwNorm)

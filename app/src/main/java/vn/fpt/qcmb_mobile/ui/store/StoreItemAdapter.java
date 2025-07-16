@@ -142,11 +142,11 @@ public class StoreItemAdapter extends RecyclerView.Adapter<StoreItemAdapter.Stor
                     bgColor = ContextCompat.getColor(context, R.color.primary_blue);
                     break;
                 case "POWER_SCORE":
-                    emoji = "\uD83D\uDD77\uFE0F";
+                    emoji = "\uD83D\uDCA5";
                     bgColor = ContextCompat.getColor(context, R.color.secondary_red);
                     break;
                 case "POINT_STEAL":
-                    emoji = "\uD83D\uDCA5";
+                    emoji = "\uD83D\uDD77\uFE0F";
                     bgColor = ContextCompat.getColor(context, R.color.primary_blue);
                     break;
                 case "DOUBLE_SCORE":

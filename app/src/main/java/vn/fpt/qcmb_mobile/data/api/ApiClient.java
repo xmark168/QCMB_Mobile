@@ -15,7 +15,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import vn.fpt.qcmb_mobile.utils.PreferenceManager;
 
 public class ApiClient {
-    private static final String BASE_URL = "http://10.0.2.2:8000/api/";
+    private static final String BASE_URL = "http://31.97.187.91:8000/api/";
     private static Retrofit retrofit;
 
     // Dùng cho những API không cần token (login, register,...)

@@ -103,10 +103,10 @@ public class InventoryItemAdapter extends RecyclerView.Adapter<InventoryItemAdap
         }
         private String getEmojiForItem(String itemName) {
             switch (itemName) {
-                case "Skip Turn": return "⏩";
-                case "Reverse": return "🔄";
+                case "Power Score": return "\uD83D\uDCA5";
+                case "Point Steal": return "\uD83D\uDD77\uFE0F";
                 case "Double Score": return "⚡";
-                case "Extra Time": return "⏳";
+                case "Ghost Turn": return "\uD83D\uDC7B";
                 default: return "🎁";
             }
         }
