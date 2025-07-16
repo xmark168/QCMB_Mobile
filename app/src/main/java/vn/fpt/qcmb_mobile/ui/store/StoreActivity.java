@@ -3,16 +3,21 @@ package vn.fpt.qcmb_mobile.ui.store;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.HashMap;
 import java.util.List;
@@ -24,6 +29,7 @@ import vn.fpt.qcmb_mobile.data.api.AuthApiService;
 import vn.fpt.qcmb_mobile.data.api.PaymentApiService;
 import vn.fpt.qcmb_mobile.data.api.StoreApiService;
 import vn.fpt.qcmb_mobile.data.request.PurchaseRequest;
+import vn.fpt.qcmb_mobile.data.response.ItemResponse;
 import vn.fpt.qcmb_mobile.data.response.PaymentStatusResponse;
 import vn.fpt.qcmb_mobile.data.response.PurchaseResponse;
 import vn.fpt.qcmb_mobile.data.response.StoreItemListResponse;
@@ -113,7 +119,22 @@ public class StoreActivity extends AppCompatActivity {
                             int newBalance = purchaseResponse.getData().getNewBalance();
                             preferenceManager.updateTokenBalance(newBalance);
                             updateTokenDisplay();
-                            Toast.makeText(StoreActivity.this, "✅ Đã mua " + item.getName(), Toast.LENGTH_SHORT).show();
+                            ItemResponse awarded = purchaseResponse.getData().getItem();
+                            if (awarded.isFromGiftBox()) {
+//                                Toast.makeText(StoreActivity.this, "🎉 Bạn nhận được: " + awarded.getName(), Toast.LENGTH_LONG).show();
+                                // find the original loot-box StoreItem so “Mua tiếp” knows what to buy
+                                StoreItemListResponse.StoreItem lootBoxItem = null;
+                                for (StoreItemListResponse.StoreItem s : adapter.getItems()) {
+                                    if ("GIFT_BOX".equals(s.getEffectType())) {
+                                        lootBoxItem = s;
+                                        break;
+                                    }
+                                }
+                                showRewardDialog(awarded, lootBoxItem);
+                            } else {
+                                Toast.makeText(StoreActivity.this, "✅ Đã mua " + awarded.getName(), Toast.LENGTH_SHORT).show();
+                            }
+//                            Toast.makeText(StoreActivity.this, "✅ Đã mua " + item.getName(), Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(StoreActivity.this, "Lỗi mua hàng", Toast.LENGTH_SHORT).show();
                         }
@@ -336,6 +357,49 @@ public class StoreActivity extends AppCompatActivity {
             // User cancelled payment
             Toast.makeText(this, "❌ Thanh toán đã bị hủy", Toast.LENGTH_SHORT).show();
             currentOrderCode = -1;
+        }
+    }
+
+    private void showRewardDialog(ItemResponse awarded, StoreItemListResponse.StoreItem lootBoxItem) {
+        View v = LayoutInflater.from(this)
+                .inflate(R.layout.dialog_reward, null, false);
+
+        // bind UI
+        ((TextView) v.findViewById(R.id.tvRewardEmoji))
+                .setText(getEmojiForEffect(awarded.getEffectType()));
+        ((TextView) v.findViewById(R.id.tvRewardName))
+                .setText(awarded.getName());
+        ((TextView) v.findViewById(R.id.tvRewardDesc))
+                .setText(awarded.getDescription());
+
+        AlertDialog dialog = new MaterialAlertDialogBuilder(this)
+                .setView(v)
+                .setCancelable(true) //allows tap-outside to dismiss
+                .create();
+
+        // close
+        v.findViewById(R.id.btnClose).setOnClickListener(
+                btn -> dialog.dismiss()
+        );
+
+        // buy more (re-use your existing purchase flow)
+        v.findViewById(R.id.btnBuyMore).setOnClickListener(btn -> {
+            dialog.dismiss();
+            purchaseItem(lootBoxItem);   // 👈 trigger another /purchase for the gift-box
+        });
+
+        dialog.show();
+    }
+
+    /** Re-use the same mapping logic already in your adapter. */
+    private String getEmojiForEffect(String effectType) {
+        switch (effectType) {
+            case "GIFT_BOX":     return "🎁";
+            case "POWER_SCORE":  return "\uD83D\uDCA5";
+            case "POINT_STEAL":  return "\uD83D\uDD77\uFE0F";
+            case "DOUBLE_SCORE": return "\u26A1";
+            case "GHOST_TURN":   return "\uD83D\uDC7B";
+            default:             return "✨";
         }
     }
 }

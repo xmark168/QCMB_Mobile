@@ -50,6 +50,7 @@
             android:exported="false" />
         <activity android:name=".ui.admin.QuestionManagementActivity" />
         <activity android:name=".ui.admin.TopicManagementActivity" />
+        <activity android:name=".ui.admin.UserManagementActivity" />
         <activity
             android:name=".ui.game.LobbyActivity"
             android:exported="false" />

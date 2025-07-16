@@ -87,6 +87,167 @@
 
             </LinearLayout> -->
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <FrameLayout
+                    android:id="@+id/fItem"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="8dp">
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        app:cardCornerRadius="20dp"
+                        app:cardElevation="1dp"
+                        app:cardBackgroundColor="#1976D2">
+
+                        <TextView
+                            android:id="@+id/tvEmojiIcon"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:text="⚡"
+                            android:textSize="18sp"
+                            android:textColor="@color/text_white" />
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- Quantity Badge -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cardQuantityBadge"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="top|end"
+                        android:layout_marginTop="-2dp"
+                        android:layout_marginEnd="-2dp"
+                        app:cardCornerRadius="10dp"
+                        app:cardElevation="3dp"
+                        app:cardBackgroundColor="#FF4444"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:id="@+id/tvQuantity"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="x2"
+                            android:textSize="10sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/text_white"
+                            android:gravity="center" />
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/fItem1"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="8dp">
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        app:cardCornerRadius="20dp"
+                        app:cardElevation="1dp"
+                        app:cardBackgroundColor="#1976D2">
+
+                        <TextView
+                            android:id="@+id/tvEmojiIcon1"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:text="⚡"
+                            android:textSize="18sp"
+                            android:textColor="@color/text_white" />
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- Quantity Badge -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cardQuantityBadge1"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="top|end"
+                        android:layout_marginTop="-2dp"
+                        android:layout_marginEnd="-2dp"
+                        app:cardCornerRadius="10dp"
+                        app:cardElevation="3dp"
+                        app:cardBackgroundColor="#FF4444"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:id="@+id/tvQuantity1"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="x2"
+                            android:textSize="10sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/text_white"
+                            android:gravity="center" />
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/fItem2"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="8dp">
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        app:cardCornerRadius="20dp"
+                        app:cardElevation="1dp"
+                        app:cardBackgroundColor="#1976D2">
+
+                        <TextView
+                            android:id="@+id/tvEmojiIcon2"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:text="⚡"
+                            android:textSize="18sp"
+                            android:textColor="@color/text_white" />
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- Quantity Badge -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cardQuantityBadge2"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="top|end"
+                        android:layout_marginTop="-2dp"
+                        android:layout_marginEnd="-2dp"
+                        app:cardCornerRadius="10dp"
+                        app:cardElevation="3dp"
+                        app:cardBackgroundColor="#FF4444"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:id="@+id/tvQuantity2"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="x2"
+                            android:textSize="10sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/text_white"
+                            android:gravity="center" />
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                </FrameLayout>
+
+            </LinearLayout>
+
         </LinearLayout>
 
         <!-- Score -->

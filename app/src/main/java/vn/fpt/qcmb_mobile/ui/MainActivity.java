@@ -12,6 +12,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import vn.fpt.qcmb_mobile.R;
+import vn.fpt.qcmb_mobile.ui.admin.AdminDashboardActivity;
 import vn.fpt.qcmb_mobile.ui.auth.LoginActivity;
 import vn.fpt.qcmb_mobile.ui.dashboard.DashboardActivity;
 import vn.fpt.qcmb_mobile.utils.PreferenceManager;
@@ -34,10 +35,15 @@ public class MainActivity extends AppCompatActivity {
 
     private void checkUserLoginStatus() {
         String accessToken = preferenceManager.getAccessToken();
+        String role = preferenceManager.getUserRole();
 
         if (accessToken != null && !accessToken.isEmpty()) {
-            // User đã đăng nhập, chuyển đến Dashboard
-            startActivity(new Intent(this, DashboardActivity.class));
+            if ("ADMIN".equalsIgnoreCase(role)) {
+                startActivity(new Intent(this, AdminDashboardActivity.class));
+            } else {
+                // User đã đăng nhập, chuyển đến Dashboard
+                startActivity(new Intent(this, DashboardActivity.class));
+            }
         } else {
             // User chưa đăng nhập, chuyển đến Login
             startActivity(new Intent(this, LoginActivity.class));
