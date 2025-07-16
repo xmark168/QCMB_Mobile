@@ -67,7 +67,7 @@ public class LobbyActivity extends AppCompatActivity {
     private int currentHandSize = 10;
     private int currentTurnTime = 30;
     private int currentMaxItems = 5;
-    private int currentMatchTime = 5;
+    private int currentMatchTime = 2;
     private EditText etRoomCode;
     private MaterialButton btnJoinByCode;
     private RecyclerView rvAvailableRooms;
@@ -98,6 +98,11 @@ public class LobbyActivity extends AppCompatActivity {
         initApiServices();
         setupTopics();
         BindingAction();
+
+        String action = getIntent().getStringExtra("action");
+        if ("join".equals(action)) {
+            switchToJoinTab();
+        }
     }
 
     private void initViews() {

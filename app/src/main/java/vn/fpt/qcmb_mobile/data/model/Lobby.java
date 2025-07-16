@@ -147,8 +147,32 @@ public class Lobby {
         return playerCountLimit;
     }
 
+    public int getMatchTimeSec() {
+        return matchTimeSec;
+    }
+
+    public void setMatchTimeSec(int matchTimeSec) {
+        this.matchTimeSec = matchTimeSec;
+    }
+
     public void setPlayerCountLimit(int playerCountLimit) {
         this.playerCountLimit = playerCountLimit;
+    }
+
+    public String getEndedAt() {
+        return endedAt;
+    }
+
+    public void setEndedAt(String endedAt) {
+        this.endedAt = endedAt;
+    }
+
+    public String getStartedAt() {
+        return startedAt;
+    }
+
+    public void setStartedAt(String startedAt) {
+        this.startedAt = startedAt;
     }
 }
 

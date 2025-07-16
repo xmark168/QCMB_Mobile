@@ -67,7 +67,6 @@ public class DashboardActivity extends AppCompatActivity {
                     binding.tvUserName.setText("Xin chào, " + preferenceManager.getUserName() + "!");
                     binding.tvTokenBalance.setText(String.valueOf(preferenceManager.getTokenBalance()));
                 } else {
-//                    showError("Lỗi khi lấy thông tin người dùng");
                     preferenceManager.clearAll();
                     startActivity(new Intent(DashboardActivity.this, LoginActivity.class));
                     finish();
@@ -104,6 +103,12 @@ public class DashboardActivity extends AppCompatActivity {
         binding.cardCreateRoom.setOnClickListener(v -> {
             Intent intent = new Intent(this, LobbyActivity.class);
             intent.putExtra("action", "create");
+            startActivity(intent);
+        });
+
+        binding.cardJoinRoom.setOnClickListener(v -> {
+            Intent intent = new Intent(this, LobbyActivity.class);
+            intent.putExtra("action", "join");
             startActivity(intent);
         });
     }

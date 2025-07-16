@@ -12,7 +12,7 @@
         android:layout_height="56dp"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:paddingHorizontal="16dp"
+        android:paddingHorizontal="32dp"
         android:background="@color/primary_blue">
 
         <ImageButton
@@ -138,7 +138,7 @@
                         android:text="💡 Gợi ý"
                         android:textSize="14sp"
                         android:textStyle="bold"
-                        android:textColor="@color/secondary_green"
+                        android:textColor="@color/white"
                         android:background="@drawable/bg_rank_default"
                         android:paddingHorizontal="12dp"
                         android:paddingVertical="4dp"
