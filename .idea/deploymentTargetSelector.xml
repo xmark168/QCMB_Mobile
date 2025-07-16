@@ -8,6 +8,11 @@
           <targets>
             <Target type="DEFAULT_BOOT">
               <handle>
+                <DeviceId pluginId="PhysicalDevice" identifier="serial=WWIJP7JFCIFUHYB6" />
+              </handle>
+            </Target>
+            <Target type="DEFAULT_BOOT">
+              <handle>
                 <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\ducda\.android\avd\Pixel_API_27.avd" />
               </handle>
             </Target>

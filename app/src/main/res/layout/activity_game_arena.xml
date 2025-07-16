@@ -95,139 +95,153 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Current Card Display -->
-        <com.google.android.material.card.MaterialCardView
+        <androidx.core.widget.NestedScrollView
             android:id="@+id/cardCurrentQuestion"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="8dp"
-            app:cardBackgroundColor="@color/text_white"
-            android:layout_marginBottom="16dp"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
             android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="20dp">
+                android:orientation="vertical">
 
-                <!-- Question Header -->
-                <LinearLayout
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="8dp"
+                    app:cardBackgroundColor="@color/text_white"
                     android:layout_marginBottom="16dp">
 
-                    <TextView
-                        android:id="@+id/tvQuestionTitle"
-                        android:layout_width="0dp"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Câu hỏi khoa học"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/text_primary" />
+                        android:orientation="vertical"
+                        android:padding="20dp">
 
-                    <!-- Item indicator if any -->
-                    <TextView
-                        android:id="@+id/tvItemIndicator"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="💡 Gợi ý"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/white"
-                        android:background="@drawable/bg_rank_default"
-                        android:paddingHorizontal="12dp"
-                        android:paddingVertical="4dp"
-                        android:visibility="gone" />
+                        <!-- Question Header -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="16dp">
 
-                </LinearLayout>
+                            <TextView
+                                android:id="@+id/tvQuestionTitle"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Câu hỏi khoa học"
+                                android:textSize="18sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/text_primary" />
 
-                <!-- Question Content -->
-                <TextView
-                    android:id="@+id/tvQuestionContent"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Nguyên tố nào có ký hiệu hóa học là 'Au'?"
-                    android:textSize="16sp"
-                    android:textColor="@color/text_primary"
-                    android:lineSpacingExtra="4dp"
-                    android:layout_marginBottom="20dp" />
+                            <!-- Item indicator if any -->
+                            <TextView
+                                android:id="@+id/tvItemIndicator"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="💡 Gợi ý"
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/white"
+                                android:background="@drawable/bg_rank_default"
+                                android:paddingHorizontal="12dp"
+                                android:paddingVertical="4dp"
+                                android:visibility="gone" />
 
-                <!-- Answer Options -->
-                <LinearLayout
-                    android:id="@+id/layoutAnswers"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                        </LinearLayout>
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnAnswer1"
-                        android:layout_width="match_parent"
-                        android:layout_height="48dp"
-                        android:text="A. Bạc"
-                        android:textSize="14sp"
-                        android:textAllCaps="false"
-                        android:textAlignment="textStart"
-                        app:backgroundTint="@color/background_light"
-                        app:strokeColor="@color/primary_blue"
-                        app:strokeWidth="1dp"
-                        app:cornerRadius="12dp"
-                        android:textColor="@color/text_primary"
-                        android:layout_marginBottom="8dp" />
+                        <!-- Question Content -->
+                        <TextView
+                            android:id="@+id/tvQuestionContent"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Nguyên tố nào có ký hiệu hóa học là 'Au'?"
+                            android:textSize="16sp"
+                            android:textColor="@color/text_primary"
+                            android:lineSpacingExtra="4dp"
+                            android:layout_marginBottom="20dp" />
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnAnswer2"
-                        android:layout_width="match_parent"
-                        android:layout_height="48dp"
-                        android:text="B. Vàng"
-                        android:textSize="14sp"
-                        android:textAllCaps="false"
-                        android:textAlignment="textStart"
-                        app:backgroundTint="@color/background_light"
-                        app:strokeColor="@color/primary_blue"
-                        app:strokeWidth="1dp"
-                        app:cornerRadius="12dp"
-                        android:textColor="@color/text_primary"
-                        android:layout_marginBottom="8dp" />
+                        <!-- Answer Options -->
+                        <LinearLayout
+                            android:id="@+id/layoutAnswers"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnAnswer3"
-                        android:layout_width="match_parent"
-                        android:layout_height="48dp"
-                        android:text="C. Đồng"
-                        android:textSize="14sp"
-                        android:textAllCaps="false"
-                        android:textAlignment="textStart"
-                        app:backgroundTint="@color/background_light"
-                        app:strokeColor="@color/primary_blue"
-                        app:strokeWidth="1dp"
-                        app:cornerRadius="12dp"
-                        android:textColor="@color/text_primary"
-                        android:layout_marginBottom="8dp" />
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnAnswer1"
+                                android:layout_width="match_parent"
+                                android:layout_height="48dp"
+                                android:text="A. Bạc"
+                                android:textSize="14sp"
+                                android:textAllCaps="false"
+                                android:textAlignment="textStart"
+                                app:backgroundTint="@color/background_light"
+                                app:strokeColor="@color/primary_blue"
+                                app:strokeWidth="1dp"
+                                app:cornerRadius="12dp"
+                                android:textColor="@color/text_primary"
+                                android:layout_marginBottom="8dp" />
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnAnswer4"
-                        android:layout_width="match_parent"
-                        android:layout_height="48dp"
-                        android:text="D. Sắt"
-                        android:textSize="14sp"
-                        android:textAllCaps="false"
-                        android:textAlignment="textStart"
-                        app:backgroundTint="@color/background_light"
-                        app:strokeColor="@color/primary_blue"
-                        app:strokeWidth="1dp"
-                        app:cornerRadius="12dp"
-                        android:textColor="@color/text_primary" />
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnAnswer2"
+                                android:layout_width="match_parent"
+                                android:layout_height="48dp"
+                                android:text="B. Vàng"
+                                android:textSize="14sp"
+                                android:textAllCaps="false"
+                                android:textAlignment="textStart"
+                                app:backgroundTint="@color/background_light"
+                                app:strokeColor="@color/primary_blue"
+                                app:strokeWidth="1dp"
+                                app:cornerRadius="12dp"
+                                android:textColor="@color/text_primary"
+                                android:layout_marginBottom="8dp" />
 
-                </LinearLayout>
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnAnswer3"
+                                android:layout_width="match_parent"
+                                android:layout_height="48dp"
+                                android:text="C. Đồng"
+                                android:textSize="14sp"
+                                android:textAllCaps="false"
+                                android:textAlignment="textStart"
+                                app:backgroundTint="@color/background_light"
+                                app:strokeColor="@color/primary_blue"
+                                app:strokeWidth="1dp"
+                                app:cornerRadius="12dp"
+                                android:textColor="@color/text_primary"
+                                android:layout_marginBottom="8dp" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnAnswer4"
+                                android:layout_width="match_parent"
+                                android:layout_height="48dp"
+                                android:text="D. Sắt"
+                                android:textSize="14sp"
+                                android:textAllCaps="false"
+                                android:textAlignment="textStart"
+                                app:backgroundTint="@color/background_light"
+                                app:strokeColor="@color/primary_blue"
+                                app:strokeWidth="1dp"
+                                app:cornerRadius="12dp"
+                                android:textColor="@color/text_primary" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
 
             </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+        <!-- Current Card Display -->
 
-        </com.google.android.material.card.MaterialCardView>
 
         <!-- Message information -->
         <com.google.android.material.card.MaterialCardView

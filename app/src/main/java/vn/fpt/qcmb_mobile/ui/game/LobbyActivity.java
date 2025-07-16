@@ -59,9 +59,10 @@ public class LobbyActivity extends AppCompatActivity {
     private MaterialCardView btnDecreasePlayer, btnIncreasePlayer;
     private MaterialButton btnCreateRoom;
     private int currentPlayerCount = 2;
-    private TextView tvHandSize, tvTurnTime, tvMaxItems, tvMatchTime;
+//    private TextView getTvTurnTime;
+    private TextView tvHandSize, tvMaxItems, tvMatchTime;
     private MaterialCardView btnDecreaseHandSize, btnIncreaseHandSize;
-    private MaterialCardView btnDecreaseTurnTime, btnIncreaseTurnTime;
+//    private MaterialCardView btnDecreaseTurnTime, btnIncreaseTurnTime;
     private MaterialCardView btnDecreaseMaxItems, btnIncreaseMaxItems;
     private MaterialCardView btnDecreaseMatchTime, btnIncreaseMatchTime;
     private int currentHandSize = 10;
@@ -125,13 +126,13 @@ public class LobbyActivity extends AppCompatActivity {
         btnIncreasePlayer = findViewById(R.id.btnIncreasePlayer);
         btnCreateRoom = findViewById(R.id.btnCreateRoom);
         tvHandSize = findViewById(R.id.tvHandSize);
-        tvTurnTime = findViewById(R.id.tvTurnTime);
+//        tvTurnTime = findViewById(R.id.tvTurnTime);
         tvMaxItems = findViewById(R.id.tvMaxItems);
         tvMatchTime = findViewById(R.id.tvMatchTime);
         btnDecreaseHandSize = findViewById(R.id.btnDecreaseHandSize);
         btnIncreaseHandSize = findViewById(R.id.btnIncreaseHandSize);
-        btnDecreaseTurnTime = findViewById(R.id.btnDecreaseTurnTime);
-        btnIncreaseTurnTime = findViewById(R.id.btnIncreaseTurnTime);
+//        btnDecreaseTurnTime = findViewById(R.id.btnDecreaseTurnTime);
+//        btnIncreaseTurnTime = findViewById(R.id.btnIncreaseTurnTime);
         btnDecreaseMaxItems = findViewById(R.id.btnDecreaseMaxItems);
         btnIncreaseMaxItems = findViewById(R.id.btnIncreaseMaxItems);
         btnDecreaseMatchTime = findViewById(R.id.btnDecreaseMatchTime);
@@ -167,8 +168,8 @@ public class LobbyActivity extends AppCompatActivity {
         // Game Settings buttons
         btnDecreaseHandSize.setOnClickListener(v -> decreaseHandSize());
         btnIncreaseHandSize.setOnClickListener(v -> increaseHandSize());
-        btnDecreaseTurnTime.setOnClickListener(v -> decreaseTurnTime());
-        btnIncreaseTurnTime.setOnClickListener(v -> increaseTurnTime());
+//        btnDecreaseTurnTime.setOnClickListener(v -> decreaseTurnTime());
+//        btnIncreaseTurnTime.setOnClickListener(v -> increaseTurnTime());
         btnDecreaseMaxItems.setOnClickListener(v -> decreaseMaxItems());
         btnIncreaseMaxItems.setOnClickListener(v -> increaseMaxItems());
         btnDecreaseMatchTime.setOnClickListener(v -> decreaseMatchTime());
@@ -490,7 +491,7 @@ public class LobbyActivity extends AppCompatActivity {
 
     private void updateGameSettingsDisplay() {
         tvHandSize.setText(String.valueOf(currentHandSize));
-        tvTurnTime.setText(String.valueOf(currentTurnTime));
+//        tvTurnTime.setText(String.valueOf(currentTurnTime));
         tvMaxItems.setText(String.valueOf(currentMaxItems));
         tvMatchTime.setText(String.valueOf(currentMatchTime));
 
@@ -499,10 +500,10 @@ public class LobbyActivity extends AppCompatActivity {
         updateButtonColor(btnDecreaseHandSize, currentHandSize > 5);
         updateButtonColor(btnIncreaseHandSize, currentHandSize < 15);
 
-        btnDecreaseTurnTime.setEnabled(currentTurnTime > 15);
-        btnIncreaseTurnTime.setEnabled(currentTurnTime < 120);
-        updateButtonColor(btnDecreaseTurnTime, currentTurnTime > 15);
-        updateButtonColor(btnIncreaseTurnTime, currentTurnTime < 120);
+//        btnDecreaseTurnTime.setEnabled(currentTurnTime > 15);
+//        btnIncreaseTurnTime.setEnabled(currentTurnTime < 120);
+//        updateButtonColor(btnDecreaseTurnTime, currentTurnTime > 15);
+//        updateButtonColor(btnIncreaseTurnTime, currentTurnTime < 120);
 
          btnDecreaseMaxItems.setEnabled(currentMaxItems > 1);
         boolean canIncreaseItems = currentMaxItems < currentHandSize - 1 && currentMaxItems < 10;
@@ -518,7 +519,7 @@ public class LobbyActivity extends AppCompatActivity {
 
     private void updateButtonColor(MaterialCardView button, boolean enabled) {
         if (enabled) {
-            if (button == btnDecreaseHandSize || button == btnDecreaseTurnTime || button == btnDecreaseMaxItems || button == btnDecreaseMatchTime) {
+            if (button == btnDecreaseHandSize || button == btnDecreaseMaxItems || button == btnDecreaseMatchTime) {
                 button.setCardBackgroundColor(getColor(R.color.secondary_red));
             } else {
                 button.setCardBackgroundColor(getColor(R.color.secondary_green));
