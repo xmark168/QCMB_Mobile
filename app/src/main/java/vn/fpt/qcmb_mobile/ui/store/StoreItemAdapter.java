@@ -68,6 +68,10 @@ public class StoreItemAdapter extends RecyclerView.Adapter<StoreItemAdapter.Stor
         holder.bind(item);
     }
 
+    public List<StoreItemListResponse.StoreItem> getItems() {
+        return items;
+    }
+
     @Override
     public int getItemCount() {
         return items.size();
