@@ -172,7 +172,7 @@
             android:id="@+id/btnAddBot"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:text=" + Mời người chơi"
+            android:text="Mời người chơi"
             android:textStyle="bold"
             android:textSize="14sp"
             android:textAllCaps="false"
@@ -183,7 +183,7 @@
             app:icon="@android:drawable/ic_input_add"
             app:iconTint="@color/text_white"
             app:iconGravity="textStart"
-            android:visibility="visible" />
+            android:visibility="gone" />
 
         <!-- Item Selection Section -->
         <LinearLayout

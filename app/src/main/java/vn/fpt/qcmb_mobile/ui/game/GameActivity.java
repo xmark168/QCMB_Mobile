@@ -302,6 +302,7 @@ public class GameActivity extends AppCompatActivity implements PlayerAdapter.OnP
     }
 
     private void bindingActions() {
+        binding.btnBack.setOnClickListener(v -> leaveRoom());
         binding.btnLeaveRoom.setOnClickListener(v -> leaveRoom());
         binding.btnStartGame.setOnClickListener(v -> startAction());
 
