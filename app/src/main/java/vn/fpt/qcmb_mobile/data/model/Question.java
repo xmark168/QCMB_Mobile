@@ -1,17 +1,20 @@
 package vn.fpt.qcmb_mobile.data.model;
 
 import com.google.gson.annotations.SerializedName;
+import java.util.UUID;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 public class Question {
+
     @SerializedName("id")
     private String id;
 
     @SerializedName("topic_id")
-    private String topicId;
+    private UUID topicId;
 
     @SerializedName("content")
     private String content;
@@ -50,6 +53,7 @@ public class Question {
     public Question(String id, String content, List<String> options, int correctAnswerIndex,
                     String category, int difficulty, int points) {
         this.id = id;
+        this.topicId = topicId;
         this.content = content;
         this.category = category;
         this.difficulty = difficulty;
@@ -92,21 +96,13 @@ public class Question {
         return id;
     }
 
-    public String getTopicId() {
+    public UUID getTopicId() {
         return topicId;
     }
 
-    public void setTopicId(String topicId) {
+    public void setTopicId(UUID topicId) {
         this.topicId = topicId;
     }
-    public String getTopic_id() {
-        return topicId;
-    }
-
-    public void setTopic_id(String topic_id) {
-        this.topicId = topic_id;
-    }
-
 
     public String getContent() {
         return content;

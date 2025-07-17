@@ -130,4 +130,7 @@
     <string name="menu">Menu</string>
     <string name="settings_icon">Biểu tượng cài đặt</string>
     <string name="card_item_icon">Biểu tượng item trên bài</string>
+    <string name="back_btn">Quay lại</string>
+    <string name="game_lobby_title">🎮Game Lobby</string>
+    <string name="refresh_btn">Tải lại</string>
 </resources>

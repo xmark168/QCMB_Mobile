@@ -66,7 +66,10 @@ public class PreferenceManager {
         editor.putInt(KEY_USER_SCORE, score);
         editor.apply();
     }
-
+    public int getId()
+    {
+        return sharedPreferences.getInt(KEY_USER_ID, -1);
+    }
     public boolean isLoggedIn() {
         return sharedPreferences.getBoolean(KEY_IS_LOGGED_IN, false);
     }
@@ -95,7 +98,9 @@ public class PreferenceManager {
     public String getUserName() {
         return sharedPreferences.getString(KEY_USER_NAME, "");
     }
-
+    public String getUserName2() {
+        return sharedPreferences.getString(KEY_USER_USERNAME, "");
+    }
     public String getUserEmail() {
         return sharedPreferences.getString(KEY_USER_EMAIL, "");
     }

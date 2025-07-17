@@ -72,7 +72,7 @@ public class QuestionManagementActivity extends AppCompatActivity implements Que
 
     private void initServices() {
         PreferenceManager pm = new PreferenceManager(this);
-        api = ApiClient.getClient(pm).create(AdminApiService.class);
+        api = ApiClient.getClient(pm,this).create(AdminApiService.class);
     }
 
     private void setupRecyclerView() {
@@ -171,7 +171,7 @@ public class QuestionManagementActivity extends AppCompatActivity implements Que
 
         for (Question q : allQuestions) {
             String catNorm = normalize(q.getCategory());
-            String topicNorm = normalize(getTopicNameById(q.getTopic_id()));
+            String topicNorm = normalize(getTopicNameById(q.getTopicId().toString()));
 
             boolean matchKeyword = kwNorm.isEmpty()
                     || normalize(q.getQuestion()).contains(kwNorm)
@@ -307,7 +307,7 @@ public class QuestionManagementActivity extends AppCompatActivity implements Que
 
             Question qq = isEdit ? q : new Question();
             qq.setQuestion(textQ);
-            qq.setTopic_id(selectedTopic.getId()); // <-- Gửi UUID topic_id
+            qq.setTopicId(selectedTopic.getId()); // <-- Gửi UUID topic_id
 
 // Optional nếu backend vẫn cần category
             qq.setCategory(selectedTopic.getName());

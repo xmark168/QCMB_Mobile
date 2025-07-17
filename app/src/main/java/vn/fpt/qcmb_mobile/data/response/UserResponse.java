@@ -15,15 +15,15 @@ public class UserResponse {
     @SerializedName("avatar_url")
     private String avatarUrl;
     @SerializedName("token_balance")
-    private int tokenBalance;
+    private Integer tokenBalance;
     @SerializedName("score")
-    private int score;
+    private Integer score;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -67,19 +67,19 @@ public class UserResponse {
         this.avatarUrl = avatarUrl;
     }
 
-    public int getTokenBalance() {
+    public Integer getTokenBalance() {
         return tokenBalance;
     }
 
-    public void setTokenBalance(int tokenBalance) {
+    public void setTokenBalance(Integer tokenBalance) {
         this.tokenBalance = tokenBalance;
     }
 
-    public int getScore() {
+    public Integer getScore() {
         return score;
     }
 
-    public void setScore(int score) {
+    public void setScore(Integer score) {
         this.score = score;
     }
 }

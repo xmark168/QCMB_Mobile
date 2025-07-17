@@ -1,5 +1,6 @@
 package vn.fpt.qcmb_mobile.data.api;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -33,9 +34,8 @@ public class ApiClient {
         return retrofit;
     }
 
-    // Dùng cho những API cần token
-    public static synchronized Retrofit getClient(PreferenceManager pref) {
-        if (retrofit == null) retrofit = buildRetrofit(pref);
+    public static synchronized Retrofit getClient(PreferenceManager pref,Context context) {
+        if (retrofit == null) retrofit = buildRetrofit(pref,context);
         return retrofit;
     }
 
@@ -43,14 +43,14 @@ public class ApiClient {
         retrofit = null;
     }
 
-    private static Retrofit buildRetrofit(PreferenceManager pref) {
+    private static Retrofit buildRetrofit(PreferenceManager pref, Context context) {
         // Log interceptor
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor(message ->
                 Log.d("HTTP_LOG", message));
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
         OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(new AuthInterceptor(pref))
+                .addInterceptor(new AuthInterceptor(pref,context))
                 .addInterceptor(loggingInterceptor)
                 .connectTimeout(30, TimeUnit.SECONDS)
                 .readTimeout(30, TimeUnit.SECONDS)

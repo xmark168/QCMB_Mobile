@@ -47,7 +47,7 @@ public class LeaderboardActivity extends AppCompatActivity {
         rvLeaderboard.setAdapter(adapter);
 
         preferenceManager = new PreferenceManager(this);
-        leaderBoardApiService = ApiClient.getClient(preferenceManager).create(LeaderBoardApiService.class);
+        leaderBoardApiService = ApiClient.getClient(preferenceManager,this).create(LeaderBoardApiService.class);
     }
 
     private void bindingAction() {

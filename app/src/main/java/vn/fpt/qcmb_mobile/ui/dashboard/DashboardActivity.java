@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -16,6 +17,7 @@ import vn.fpt.qcmb_mobile.data.api.AuthApiService;
 import vn.fpt.qcmb_mobile.data.response.UserResponse;
 import vn.fpt.qcmb_mobile.databinding.ActivityDashboardBinding;
 import vn.fpt.qcmb_mobile.ui.auth.LoginActivity;
+import vn.fpt.qcmb_mobile.ui.game.LobbyActivity;
 import vn.fpt.qcmb_mobile.ui.profile.ProfileActivity;
 import vn.fpt.qcmb_mobile.ui.store.StoreActivity;
 import vn.fpt.qcmb_mobile.utils.PreferenceManager;
@@ -45,7 +47,7 @@ public class DashboardActivity extends AppCompatActivity {
 
     private void bindingView() {
         preferenceManager = new PreferenceManager(this);
-        authApiService = ApiClient.getClient(preferenceManager).create(AuthApiService.class);
+        authApiService = ApiClient.getClient(preferenceManager,this).create(AuthApiService.class);
 
     }
 
@@ -54,7 +56,7 @@ public class DashboardActivity extends AppCompatActivity {
 
         call.enqueue(new Callback<>() {
             @Override
-            public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+            public void onResponse(@NonNull Call<UserResponse> call, @NonNull Response<UserResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     UserResponse userResponse = response.body();
 
@@ -65,7 +67,6 @@ public class DashboardActivity extends AppCompatActivity {
                     binding.tvUserName.setText("Xin chào, " + preferenceManager.getUserName() + "!");
                     binding.tvTokenBalance.setText(String.valueOf(preferenceManager.getTokenBalance()));
                 } else {
-//                    showError("Lỗi khi lấy thông tin người dùng");
                     preferenceManager.clearAll();
                     startActivity(new Intent(DashboardActivity.this, LoginActivity.class));
                     finish();
@@ -79,7 +80,7 @@ public class DashboardActivity extends AppCompatActivity {
         });
 
 
-//        mở menu
+        // Mở menu
         binding.btnSettings.setOnClickListener(v -> {
             showSettingMenu();
         });
@@ -98,6 +99,18 @@ public class DashboardActivity extends AppCompatActivity {
         binding.cardLeaderboard.setOnClickListener(v -> {
             startActivity(new Intent(this, LeaderboardActivity.class));
         });
+        // Create Room
+        binding.cardCreateRoom.setOnClickListener(v -> {
+            Intent intent = new Intent(this, LobbyActivity.class);
+            intent.putExtra("action", "create");
+            startActivity(intent);
+        });
+
+        binding.cardJoinRoom.setOnClickListener(v -> {
+            Intent intent = new Intent(this, LobbyActivity.class);
+            intent.putExtra("action", "join");
+            startActivity(intent);
+        });
     }
 
 
@@ -110,10 +123,8 @@ public class DashboardActivity extends AppCompatActivity {
         builder.setTitle("Cài đặt");
         builder.setItems(new CharSequence[]{"Đăng xuất"},
                 (dialog, which) -> {
-                    switch (which) {
-                        case 0:
-                            logout();
-                            break;
+                    if (which == 0) {
+                        logout();
                     }
                 });
         builder.show();
@@ -136,4 +147,6 @@ public class DashboardActivity extends AppCompatActivity {
         builder.setNegativeButton("Không", null);
         builder.show();
     }
+
+
 }

@@ -72,7 +72,7 @@ public class ProfileActivity extends AppCompatActivity {
         rvInventory = findViewById(R.id.rvInventory);
 
         preferenceManager = new PreferenceManager(this);
-        storeApiService = ApiClient.getClient(preferenceManager).create(StoreApiService.class);
+        storeApiService = ApiClient.getClient(preferenceManager,this).create(StoreApiService.class);
     }
 
     private void bindingAction() {
@@ -190,7 +190,19 @@ public class ProfileActivity extends AppCompatActivity {
                 .transform(new CircleCrop())
                 .into(ivAvatar);
     }
-
+    private String getEmojiForItem(String itemName) {
+        switch (itemName) {
+//            case "Skip Turn": return "⏩";
+//            case "Reverse": return "🔄";
+//            case "Double Score": return "⚡";
+//            case "Extra Time": return "⏳";
+            case "Point Steal": return "\uD83D\uDD77\uFE0F";
+            case "Power Score": return "\uD83D\uDCA5";
+            case "Double Score": return "⚡";
+            case "Ghost Turn": return "\uD83D\uDC7B";
+            default: return "🎁";
+        }
+    }
     private void loadGameStats() {
         tvGamesPlayed.setText("0");
         tvTotalScore.setText(String.valueOf(preferenceManager.getUserScore()));
@@ -199,9 +211,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void loadInventory() {
-        String token = preferenceManager.getFullToken();
-
-        storeApiService.getUserInventory(token).enqueue(new Callback<List<Inventory>>() {
+        storeApiService.getUserInventory().enqueue(new Callback<List<Inventory>>() {
             @Override
             public void onResponse(Call<List<Inventory>> call, Response<List<Inventory>> response) {
                 if (response.code() == 401) {

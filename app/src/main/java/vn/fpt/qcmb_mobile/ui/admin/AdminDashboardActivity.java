@@ -55,7 +55,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
             redirectToLogin();
             return;
         }
-        adminApiService = ApiClient.getClient(preferenceManager).create(AdminApiService.class);
+        adminApiService = ApiClient.getClient(preferenceManager,this).create(AdminApiService.class);
 
         setContentView(R.layout.activity_admin_dashboard);
 
@@ -180,6 +180,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        super.onBackPressed();
         // Show logout confirmation on back press
         performLogout();
     }

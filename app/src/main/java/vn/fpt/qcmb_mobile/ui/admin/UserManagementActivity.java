@@ -73,7 +73,7 @@ public class UserManagementActivity extends AppCompatActivity implements UserAda
 
     private void initServices() {
         PreferenceManager pref = new PreferenceManager(this);
-        adminApiService = ApiClient.getClient(pref).create(AdminApiService.class);
+        adminApiService = ApiClient.getClient(pref,this).create(AdminApiService.class);
     }
 
     private void setupRecyclerView() {

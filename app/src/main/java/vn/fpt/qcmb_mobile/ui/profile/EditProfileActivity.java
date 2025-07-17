@@ -70,7 +70,7 @@ public class EditProfileActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar);
 
         preferenceManager = new PreferenceManager(this);
-        authApiService = ApiClient.getClient(preferenceManager).create(AuthApiService.class);
+        authApiService = ApiClient.getClient(preferenceManager,this).create(AuthApiService.class);
 
         // Load current user data from preferences
         String userName = preferenceManager.getUserName();

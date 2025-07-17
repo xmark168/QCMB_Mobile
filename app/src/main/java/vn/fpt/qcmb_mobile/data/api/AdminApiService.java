@@ -2,6 +2,7 @@ package vn.fpt.qcmb_mobile.data.api;
 
 
 import java.util.List;
+import java.util.UUID;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -37,10 +38,10 @@ public interface AdminApiService {
     Call<Topic> addTopic(@Body Topic topic);
 
     @PUT("topics/{id}")
-    Call<Topic> updateTopic(@Path("id") String id, @Body Topic topic);
+    Call<Topic> updateTopic(@Path("id") UUID id, @Body Topic topic);
 
     @DELETE("topics/{id}")
-    Call<Void> deleteTopic(@Path("id") String id);
+    Call<Void> deleteTopic(@Path("id") UUID id);
 
     @GET("questions")
     Call<List<Question>> getQuestions();

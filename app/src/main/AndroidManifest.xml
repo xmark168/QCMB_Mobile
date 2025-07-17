@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-    <!-- cấp quyền để đăng nhập được -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
@@ -14,6 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.QCMB_Mobile"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
             android:name=".ui.dashboard.LeaderboardActivity"
@@ -51,6 +51,15 @@
         <activity android:name=".ui.admin.QuestionManagementActivity" />
         <activity android:name=".ui.admin.TopicManagementActivity" />
         <activity android:name=".ui.admin.UserManagementActivity" />
+        <activity
+            android:name=".ui.game.LobbyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.game.GameActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.game.GameArenaActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.MainActivity"
             android:exported="true">

@@ -64,7 +64,7 @@ public class RegisterActivity extends AppCompatActivity {
 
 
         preferenceManager = new PreferenceManager(getApplicationContext());
-        authApiService = ApiClient.getClient(preferenceManager).create(AuthApiService.class);
+        authApiService = ApiClient.getClient(preferenceManager,this).create(AuthApiService.class);
     }
 
     private void bindingAction() {

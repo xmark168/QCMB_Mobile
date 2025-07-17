@@ -71,9 +71,9 @@ public class StoreActivity extends AppCompatActivity {
         tvTokenBalance = findViewById(R.id.tvTokenBalance);
         rvStoreItems = findViewById(R.id.rvStoreItems);
         preferenceManager = new PreferenceManager(this);
-        storeApiService = ApiClient.getClient(preferenceManager).create(StoreApiService.class);
-        paymentApiService = ApiClient.getClient(preferenceManager).create(PaymentApiService.class);
-        authApiService = ApiClient.getClient(preferenceManager).create(AuthApiService.class);
+        storeApiService = ApiClient.getClient(preferenceManager,this).create(StoreApiService.class);
+        paymentApiService = ApiClient.getClient(preferenceManager,this).create(PaymentApiService.class);
+        authApiService = ApiClient.getClient(preferenceManager,this).create(AuthApiService.class);
     }
 
     public void bindingAction() {
